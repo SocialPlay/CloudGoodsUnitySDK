@@ -41,7 +41,10 @@ public class PersistantUserDataExample : MonoBehaviour
     public void SaveUserData()
     {
         //string key, string value
-        CloudGoods.SaveUserData(SaveKey.text, SaveValue.text, (r) => { saveResponse.text = r.ToString(); });
+        CloudGoods.SaveUserData(SaveKey.text, SaveValue.text, (r) => {
+            Debug.Log(r);
+            saveResponse.text = r.ToString();
+        });
 
 
     }
@@ -57,7 +60,7 @@ public class PersistantUserDataExample : MonoBehaviour
     public void DeleteUserDateValue()
     {
         //Guid userID, string key
-        CloudGoods.DeleteUserDateValue(DeleteKey.text, (r) => { DeleteResponse.text = r.ToRichColor(); });
+        CloudGoods.DeleteUserDataValue(DeleteKey.text, (r) => { DeleteResponse.text = r; });
     }
 
     public void RetriveAllUsersData()
