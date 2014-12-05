@@ -498,8 +498,6 @@ public class LitJsonFxJsonObjectConverter : IServiceObjectConverter
              generatedItems.GenerationID = 0;
         }
 
-        Debug.Log("Convert to generated generatedID: " + dataArray["GenerationId"].ToString());
-
         ItemDataList itemDataList = new SocialPlay.Data.ItemDataList();
 
         JsonData itemsData = dataArray["Items"];
@@ -534,7 +532,44 @@ public class LitJsonFxJsonObjectConverter : IServiceObjectConverter
 
     public List<GiveGeneratedItemResult> ConvertToListGiveGenerationItemResult(string dataString)
     {
-        return new List<GiveGeneratedItemResult>();
+        Debug.Log("give generated items: " + dataString);
+        List<GiveGeneratedItemResult> listGiveGenerationItemResult = new List<GiveGeneratedItemResult>();
+
+        string parsedString = ParseString(dataString);
+        JsonData dataArray = LitJson.JsonMapper.ToObject(parsedString);
+
+        int statusCode = 0;
+
+        if (!int.TryParse(dataArray["StatusCode"].ToString(), out statusCode))
+        {
+            Debug.LogError("GenerationID was not valid");
+            statusCode = 0;
+        }
+
+        if (statusCode == 1)
+        {
+            Debug.Log("Message from give: " + dataArray["Message"].ToString());
+
+            JsonData giveItemResultData = JsonMapper.ToObject(dataArray["Message"].ToString());
+
+            for (int i = 0; i < giveItemResultData.Count; i++)
+            {
+                GiveGeneratedItemResult giveItemResult = new GiveGeneratedItemResult();
+
+                giveItemResult.ItemId = int.Parse(giveItemResultData[i]["ItemId"].ToString());
+                giveItemResult.StackLocationId = new Guid(giveItemResultData[i]["StackLocationId"].ToString());
+                giveItemResult.Amount = int.Parse(giveItemResultData[i]["Amount"].ToString());
+
+                listGiveGenerationItemResult.Add(giveItemResult);
+            }
+
+            return listGiveGenerationItemResult;
+        }
+        else
+        {
+            Debug.LogError("StatusCode returned error");
+            return new List<GiveGeneratedItemResult>();
+        }
     }
 
     string ParseString(string dataString)
