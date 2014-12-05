@@ -221,15 +221,11 @@ public class ItemContainer : MonoBehaviour
 
     public void UpdateContainerWithItems(List<GiveGeneratedItemResult> givenUserItems)
     {
-        Debug.Log("Checking for update on userItems");
-
         bool IsItemInContainer = false;
 
         foreach (GiveGeneratedItemResult givenUserItem in givenUserItems)
         {
             IsItemInContainer = false;
-
-            Debug.Log("Searching for itemID: " + givenUserItem.StackLocationId);
 
             ItemData givenItemData = containerItems.FirstOrDefault(x => x.stackID == givenUserItem.StackLocationId);
 
