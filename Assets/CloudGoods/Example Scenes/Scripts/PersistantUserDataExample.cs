@@ -52,7 +52,7 @@ public class PersistantUserDataExample : MonoBehaviour
     public void RetriveUserDataValue()
     {
         //Guid userID, string key
-        CloudGoods.RetriveUserDataValue(RetriveKey.text, (r) => { loadResponse.text = r; });
+        CloudGoods.RetrieveUserDataValue(RetriveKey.text, (r) => { loadResponse.text = r; });
     }
 
 
@@ -78,7 +78,7 @@ public class PersistantUserDataExample : MonoBehaviour
 
     public void RetriveAllUserDataOfKey()
     {
-        CloudGoods.RetriveAllUserDataOfKey(RetriveAllValuesOfKey.text, (r) => {
+        CloudGoods.RetrieveAllUserDataOfKey(RetriveAllValuesOfKey.text, (r) => {
             RetriveAllValuesOfKeyResponse.text = "";
             for (int i = 0; i < r.Count; i++)
             {             
