@@ -1257,14 +1257,14 @@ public class CloudGoods : MonoBehaviour//, IServiceCalls
     }
 
 
-    static public void RetriveUserDataValue(string Key, Action<string> callback)
+    static public void RetrieveUserDataValue(string Key, Action<string> callback)
     {
-        RetriveUserDataValue(Key, callback, user.userID);
+        RetrieveUserDataValue(Key, callback, user.userID);
     }
 
-    static public void RetriveUserDataValue(string Key, Action<string> callback, Guid AlternateUserID)
+    static public void RetrieveUserDataValue(string Key, Action<string> callback, Guid AlternateUserID)
     {
-        string url = string.Format("{0}RetriveUserDataValue?appId={1}&UserID={2}&Key={3}", Url, AppID, AlternateUserID, WWW.EscapeURL(Key));
+        string url = string.Format("{0}RetrieveUserDataValue?appId={1}&UserID={2}&Key={3}", Url, AppID, AlternateUserID, WWW.EscapeURL(Key));
         WWW www = new WWW(url);
         Get().StartCoroutine(Get().ServiceGetString(www, callback));
     }
@@ -1296,20 +1296,20 @@ public class CloudGoods : MonoBehaviour//, IServiceCalls
 
     static public void RetriveAllUserDataValues(Action<Dictionary<string, string>> callback, Guid AlternateUserID)
     {
-        string url = string.Format("{0}RetriveAllUserDataValues?appId={1}&UserID={2}", Url, AppID, AlternateUserID);
+        string url = string.Format("{0}RetrieveAllUserDataValues?appId={1}&UserID={2}", Url, AppID, AlternateUserID);
         WWW www = new WWW(url);
         Get().StartCoroutine(Get().ServiceGetDictionary(www, callback));
     }
 
 
-    static public void RetriveAllUserDataOfKey(string Key, Action<List<UserDataValue>> callback)
+    static public void RetrieveAllUserDataOfKey(string Key, Action<List<UserDataValue>> callback)
     {
-        RetriveAllUserDataOfKey(Key, callback, user.userID);
+        RetrieveAllUserDataOfKey(Key, callback, user.userID);
     }
 
-    static public void RetriveAllUserDataOfKey(string Key, Action<List<UserDataValue>> callback, Guid AlternateUserID)
+    static public void RetrieveAllUserDataOfKey(string Key, Action<List<UserDataValue>> callback, Guid AlternateUserID)
     {
-        string url = string.Format("{0}RetriveAllUserDataOfKey?appId={1}&UserID={2}&Key={3}", Url, AppID, AlternateUserID, WWW.EscapeURL(Key));
+        string url = string.Format("{0}RetrieveAllUserDataOfKey?appId={1}&UserID={2}&Key={3}", Url, AppID, AlternateUserID, WWW.EscapeURL(Key));
         WWW www = new WWW(url);
         Get().StartCoroutine(Get().ServiceUserDataValueResponse(www, callback));
     }
