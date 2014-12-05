@@ -381,6 +381,39 @@ public class CloudGoods : MonoBehaviour//, IServiceCalls
         Get().StartCoroutine(Get().ServiceCallGetListItemDatas(www, callback));
     }
 
+    static public void NewGenerateItems(int MinimumEnergyOfItem, int TotalEnergyToGenerate, Action<GeneratedItems> callback, string ANDTags = "", string ORTags = "")
+    {
+        if (!isLogged)
+        {
+            Debug.LogWarning("Need to login first to get items.");
+            return;
+        }
+        string url = string.Format("{0}RunItemGenerator?appId={1}&MinimumEnergyOfItem={2}&TotalEnergyToGenerate={3}&andTags={4}&orTags={5}", Url, GuidAppID, MinimumEnergyOfItem, TotalEnergyToGenerate, ANDTags, ORTags);
+
+        WWW www = new WWW(url);
+        Get().StartCoroutine(Get().ServiceGeneratedItemsResponse(www, callback));
+    }
+
+    static public void GiveGeneratedItemToOwner(string ownerType, List<SelectedGenerationItem> selectedItems, int generationID, int location, Action<List<GiveGeneratedItemResult>> callback)
+    {
+        Debug.Log("Here");
+
+        if (!isLogged)
+        {
+            Debug.LogWarning("Need to login first to get items.");
+            return;
+        }
+
+        JsonData selectedItemsJson = JsonMapper.ToJson(selectedItems);
+        
+        Debug.Log("Selected items: " + selectedItemsJson.ToString());
+
+        string url = string.Format("{0}GiveGeneratedItemToOwner?appId={1}&ownerType={2}&ownerId={3}&selectedItems={4}&generationId={5}&location={6}", Url, GuidAppID, ownerType, user.userID, selectedItemsJson.ToString(), generationID, location);
+
+        WWW www = new WWW(url);
+        Get().StartCoroutine(Get().ServiceGiveGenerationItemsToOwnerResponse(www, callback));
+    }
+
     /// <summary>
     /// Loads item list from the specified owner.
     /// </summary>
@@ -1590,6 +1623,54 @@ public class CloudGoods : MonoBehaviour//, IServiceCalls
             try
             {
                 callback(serviceConverter.ConvertToUserDataValueList(www.text));
+            }
+            catch (Exception e)
+            {
+                Debug.LogError(e.Message);
+                Debug.LogError(www.text);
+            }
+        }
+        else
+        {
+            if (onErrorEvent != null) onErrorEvent("Error: " + www.error);
+        }
+    }
+
+    IEnumerator ServiceGeneratedItemsResponse(WWW www, Action<GeneratedItems> callback)
+    {
+        yield return www;
+
+        // check for errors
+        if (www.error == null)
+        {
+            try
+            {
+                Debug.Log("Received generated items response: " + www.text);
+                callback(serviceConverter.ConvertToGeneratedItems(www.text));
+            }
+            catch (Exception e)
+            {
+                Debug.LogError(e.Message);
+                Debug.LogError(www.text);
+            }
+        }
+        else
+        {
+            if (onErrorEvent != null) onErrorEvent("Error: " + www.error);
+        }
+    }
+
+    IEnumerator ServiceGiveGenerationItemsToOwnerResponse(WWW www, Action<List<GiveGeneratedItemResult>> callback)
+    {
+        yield return www;
+
+        // check for errors
+        if (www.error == null)
+        {
+            try
+            {
+                Debug.Log("Received give generated items response: " + www.text);
+                callback(serviceConverter.ConvertToListGiveGenerationItemResult(www.text));
             }
             catch (Exception e)
             {
