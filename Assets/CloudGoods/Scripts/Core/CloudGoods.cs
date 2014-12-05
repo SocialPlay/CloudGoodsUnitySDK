@@ -1217,6 +1217,7 @@ public class CloudGoods : MonoBehaviour//, IServiceCalls
             payload.Key = Key;
             payload.UserID = AlternateUserID.ToString();
             payload.Value = Value;
+            payload.AppID = AppID;
             string newStringRequest = JsonMapper.ToJson(payload);
             SecureCall(token, newStringRequest, callback);
         });
@@ -1247,10 +1248,11 @@ public class CloudGoods : MonoBehaviour//, IServiceCalls
         {
             DeleteUserDataRequest payload = new DeleteUserDataRequest();
             payload.Key = Key;
-            payload.UserID = AlternateUserID.ToString();          
+            payload.UserID = AlternateUserID.ToString();
+            payload.AppID = AppID;
             string newStringRequest = JsonMapper.ToJson(payload);
             SecureCall(token, newStringRequest, callback);
-        });   
+        });
     }
 
 
@@ -1296,7 +1298,7 @@ public class CloudGoods : MonoBehaviour//, IServiceCalls
             {
                 callback(serviceConverter.ConvertToString(www.text));
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Debug.LogError(www.text);
                 Debug.LogError(e.Message);
@@ -1744,7 +1746,7 @@ public class CloudGoods : MonoBehaviour//, IServiceCalls
         Get().StartCoroutine(Get().ServiceGetString(www, (x) =>
         {
             if (callback != null)
-            {          
+            {
                 callback(DecryptString(AppSecret, x.Replace("\\", "")));
             }
         }));

@@ -205,12 +205,14 @@ public class SaveUserDataRequest
     public string Key;
     public string Value;
     public string UserID;
+    public string AppID;
 }
 
 class DeleteUserDataRequest
 {
     public string Key;
     public string UserID;
+    public string AppID;
 }
 
 public class UserDataValue
