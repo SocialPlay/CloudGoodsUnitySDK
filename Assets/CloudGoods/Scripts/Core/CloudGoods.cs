@@ -1283,12 +1283,12 @@ public class CloudGoods : MonoBehaviour//, IServiceCalls
     }
 
 
-    static public void RetriveAllUserDataValues(Action<Dictionary<string, string>> callback)
+    static public void RetrieveAllUserDataValues(Action<Dictionary<string, string>> callback)
     {
-        RetriveAllUserDataValues(callback, user.userID);
+        RetrieveAllUserDataValues(callback, user.userID);
     }
 
-    static public void RetriveAllUserDataValues(Action<Dictionary<string, string>> callback, Guid AlternateUserID)
+    static public void RetrieveAllUserDataValues(Action<Dictionary<string, string>> callback, Guid AlternateUserID)
     {
         string url = string.Format("{0}RetrieveAllUserDataValues?appId={1}&UserID={2}", Url, AppID, AlternateUserID);
         WWW www = new WWW(url);

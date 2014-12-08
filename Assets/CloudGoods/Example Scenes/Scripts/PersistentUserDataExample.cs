@@ -11,16 +11,16 @@ public class PersistentUserDataExample : MonoBehaviour
     public InputField SaveValue;
     public Text saveResponse;
 
-    public InputField RetriveKey;
+    public InputField RetrieveKey;
     public Text loadResponse;
 
     public InputField DeleteKey;
     public Text DeleteResponse;
 
-    public Text RetriveAllUserResponse;
+    public Text RetrieveAllUserResponse;
 
-    public InputField RetriveAllValuesOfKey;
-    public Text RetriveAllValuesOfKeyResponse;
+    public InputField RetrieveAllValuesOfKey;
+    public Text RetrieveAllValuesOfKeyResponse;
 
     public InputField AlternateUserID;
     public Toggle isUsingAlternate;
@@ -31,15 +31,15 @@ public class PersistentUserDataExample : MonoBehaviour
         {
             Guid userID = new Guid(CloudGoods.user.userGuid);
             if (isUsingAlternate.isOn)
-            {             
+            {
                 try
                 {
-                     userID = new Guid(AlternateUserID.text);
+                    userID = new Guid(AlternateUserID.text);
                 }
                 catch
                 {
-                     userID = new Guid(CloudGoods.user.userGuid);
-                }             
+                    userID = new Guid(CloudGoods.user.userGuid);
+                }
             }
             return userID;
         }
@@ -52,6 +52,7 @@ public class PersistentUserDataExample : MonoBehaviour
         ShowChildren(false);
     }
 
+
     void ShowChildren(bool isShown)
     {
         for (int childIndex = 0; childIndex < this.transform.childCount; childIndex++)
@@ -63,7 +64,6 @@ public class PersistentUserDataExample : MonoBehaviour
 
     public void SaveUserData()
     {
-        //string key, string value
         CloudGoods.SaveUserData(SaveKey.text, SaveValue.text, (r) =>
         {
             Debug.Log(r);
@@ -73,43 +73,42 @@ public class PersistentUserDataExample : MonoBehaviour
 
     }
 
-    public void RetriveUserDataValue()
-    {
-        //Guid userID, string key
-        CloudGoods.RetrieveUserDataValue(RetriveKey.text, (r) => { loadResponse.text = r; }, User);
-    }
 
+    public void RetrieveUserDataValue()
+    {
+        CloudGoods.RetrieveUserDataValue(RetrieveKey.text, (r) => { loadResponse.text = r; }, User);
+    }
 
 
     public void DeleteUserDateValue()
     {
-        //Guid userID, string key
         CloudGoods.DeleteUserDataValue(DeleteKey.text, (r) => { DeleteResponse.text = r; }, User);
     }
 
-    public void RetriveAllUsersData()
+
+    public void RetrieveAllUsersData()
     {
-        CloudGoods.RetriveAllUserDataValues((r) =>
+        CloudGoods.RetrieveAllUserDataValues((r) =>
         {
-            RetriveAllUserResponse.text = "";
+            RetrieveAllUserResponse.text = "";
             foreach (KeyValuePair<string, string> data in r)
             {
-                RetriveAllUserResponse.text += data.Key.ToRichColor(Color.white) + ":" + (data.Value != null ? data.Value : "Null") + "\n";
+                RetrieveAllUserResponse.text += data.Key.ToRichColor(Color.white) + ":" + (data.Value != null ? data.Value : "Null") + "\n";
             }
 
         }, User);
     }
 
-    public void RetriveAllUserDataOfKey()
+
+    public void RetrieveAllUserDataOfKey()
     {
-        CloudGoods.RetrieveAllUserDataOfKey(RetriveAllValuesOfKey.text, (r) =>
+        CloudGoods.RetrieveAllUserDataOfKey(RetrieveAllValuesOfKey.text, (r) =>
         {
-            RetriveAllValuesOfKeyResponse.text = "";
+            RetrieveAllValuesOfKeyResponse.text = "";
             for (int i = 0; i < r.Count; i++)
             {
-                RetriveAllValuesOfKeyResponse.text += r[i].user.userName.ToRichColor(Color.white) + " : " + r[i].value + "\n";
+                RetrieveAllValuesOfKeyResponse.text += r[i].user.userName.ToRichColor(Color.white) + " : " + r[i].value + "\n";
             }
-            //RetriveAllValuesOfKeyResponse.text = r;
         }, User);
     }
 
