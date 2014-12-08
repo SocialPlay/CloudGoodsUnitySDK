@@ -15,7 +15,7 @@ public class CloudGoodsSettings : ScriptableObject
 
     static public string VERSION = "1.0";
 
-    static public string mainPath = "Assets/CloudGoods/";
+    static public string mainPath = "Assets/CloudGoods/Textures/";
 
     public string appID;
     public string appSecret;

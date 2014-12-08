@@ -375,7 +375,7 @@ public class CloudGoods : MonoBehaviour//, IServiceCalls
             Debug.LogWarning("Need to login first to get items.");
             return;
         }
-        string url = string.Format("{0}GenerateItemsAtLocation?OwnerID={1}&OwnerType={2}&Location={3}&AppID={4}&MinimumEnergyOfItem={5}&TotalEnergyToGenerate={6}&ANDTags={7}&ORTags={8}", Url, user.sessionID, OwnerType, Location, GuidAppID, MinimumEnergyOfItem, TotalEnergyToGenerate, ANDTags, ORTags);
+        string url = string.Format("{0}GenerateItemsAtLocation?OwnerID={1}&OwnerType={2}&Location={3}&AppID={4}&MinimumEnergyOfItem={5}&TotalEnergyToGenerate={6}&ANDTags={7}&ORTags={8}", Url, user.userID, OwnerType, Location, GuidAppID, MinimumEnergyOfItem, TotalEnergyToGenerate, ANDTags, ORTags);
 
         WWW www = new WWW(url);
         Get().StartCoroutine(Get().ServiceCallGetListItemDatas(www, callback));
@@ -396,8 +396,6 @@ public class CloudGoods : MonoBehaviour//, IServiceCalls
 
     static public void GiveGeneratedItemToOwner(string ownerType, List<SelectedGenerationItem> selectedItems, int generationID, int location, Action<List<GiveGeneratedItemResult>> callback)
     {
-        Debug.Log("Here");
-
         if (!isLogged)
         {
             Debug.LogWarning("Need to login first to get items.");
@@ -406,8 +404,6 @@ public class CloudGoods : MonoBehaviour//, IServiceCalls
 
         JsonData selectedItemsJson = JsonMapper.ToJson(selectedItems);
         
-        Debug.Log("Selected items: " + selectedItemsJson.ToString());
-
         string url = string.Format("{0}GiveGeneratedItemToOwner?appId={1}&ownerType={2}&ownerId={3}&selectedItems={4}&generationId={5}&location={6}", Url, GuidAppID, ownerType, user.userID, selectedItemsJson.ToString(), generationID, location);
 
         WWW www = new WWW(url);
@@ -616,8 +612,6 @@ public class CloudGoods : MonoBehaviour//, IServiceCalls
 
     static public void MoveItemStack(Guid StackToMove, int MoveAmount, string DestinationOwnerID, string DestinationOwnerType, int DestinationLocation, Action<Guid> callback)
     {
-        Debug.Log("Stack to move: " + StackToMove + " move amount: " + MoveAmount);
-
         string url = string.Format("{0}MoveItemStack?StackToMove={1}&MoveAmount={2}&DestinationOwnerID={3}&DestinationOwnerType={4}&AppID={5}&DestinationLocation={6}", Url, StackToMove, MoveAmount, DestinationOwnerID, DestinationOwnerType, GuidAppID, DestinationLocation);
         WWW www = new WWW(url);
 
@@ -1456,8 +1450,6 @@ public class CloudGoods : MonoBehaviour//, IServiceCalls
 
         if (www.error == null)
         {
-            Debug.Log("Service get guid: " + www.text);
-
             try
             {
                 callback(serviceConverter.ConvertToGuid(www.text));
@@ -1645,7 +1637,6 @@ public class CloudGoods : MonoBehaviour//, IServiceCalls
         {
             try
             {
-                Debug.Log("Received generated items response: " + www.text);
                 callback(serviceConverter.ConvertToGeneratedItems(www.text));
             }
             catch (Exception e)
@@ -1669,7 +1660,6 @@ public class CloudGoods : MonoBehaviour//, IServiceCalls
         {
             try
             {
-                Debug.Log("Received give generated items response: " + www.text);
                 callback(serviceConverter.ConvertToListGiveGenerationItemResult(www.text));
             }
             catch (Exception e)
