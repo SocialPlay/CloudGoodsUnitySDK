@@ -4,7 +4,7 @@ using System;
 using UnityEngine.UI;
 using System.Collections.Generic;
 
-public class PersistantUserDataExample : MonoBehaviour
+public class PersistentUserDataExample : MonoBehaviour
 {
 
     public InputField SaveKey;
