@@ -241,7 +241,7 @@ public class UserDataResponse
     public DateTime lastUpdated;
 }
 
-public class multipleUserDataValue
+public class MultipleUserDataValue
 {
     public User user;
     public string value;
@@ -254,7 +254,7 @@ public class multipleUserDataValue
         public string userID;
     }
 
-    public multipleUserDataValue(string userName, int platformID, string platformUserID, string userID, string newValue)
+    public MultipleUserDataValue(string userName, int platformID, string platformUserID, string userID, string newValue)
     {
         user = new User();
         user.userName = userName;

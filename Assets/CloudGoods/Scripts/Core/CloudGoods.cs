@@ -1296,12 +1296,12 @@ public class CloudGoods : MonoBehaviour//, IServiceCalls
     }
 
 
-    static public void RetrieveAllUserDataOfKey(string Key, Action<List<multipleUserDataValue>> callback)
+    static public void RetrieveAllUserDataOfKey(string Key, Action<List<MultipleUserDataValue>> callback)
     {
         RetrieveAllUserDataOfKey(Key, callback, user.userID);
     }
 
-    static public void RetrieveAllUserDataOfKey(string Key, Action<List<multipleUserDataValue>> callback, Guid AlternateUserID)
+    static public void RetrieveAllUserDataOfKey(string Key, Action<List<MultipleUserDataValue>> callback, Guid AlternateUserID)
     {
         string url = string.Format("{0}RetrieveAllUserDataOfKey?appId={1}&UserID={2}&Key={3}", Url, AppID, AlternateUserID, WWW.EscapeURL(Key));
         WWW www = new WWW(url);
@@ -1605,7 +1605,7 @@ public class CloudGoods : MonoBehaviour//, IServiceCalls
         }
     }
 
-    IEnumerator ServiceUserDataValueResponse(WWW www, Action<List<multipleUserDataValue>> callback)
+    IEnumerator ServiceUserDataValueResponse(WWW www, Action<List<MultipleUserDataValue>> callback)
     {
         yield return www;
 

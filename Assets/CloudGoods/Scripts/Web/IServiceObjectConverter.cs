@@ -35,7 +35,7 @@ public interface IServiceObjectConverter
 
     ConsumeResponse ConverToConsumeCreditsResponse(string dataString);
 
-    List<multipleUserDataValue> ConvertToUserDataValueList(string dataString);
+    List<MultipleUserDataValue> ConvertToUserDataValueList(string dataString);
 
     GeneratedItems ConvertToGeneratedItems(string dataString);
 

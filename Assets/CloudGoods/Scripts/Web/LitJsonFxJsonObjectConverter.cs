@@ -466,9 +466,9 @@ public class LitJsonFxJsonObjectConverter : IServiceObjectConverter
         return consumeResponse;
     }
 
-    public List<multipleUserDataValue> ConvertToUserDataValueList(string dataString)
+    public List<MultipleUserDataValue> ConvertToUserDataValueList(string dataString)
     {
-        List<multipleUserDataValue> allValues = new List<multipleUserDataValue>();
+        List<MultipleUserDataValue> allValues = new List<MultipleUserDataValue>();
         string parsedString = ParseString(dataString);
         JsonData dataArray = LitJson.JsonMapper.ToObject(parsedString);
 
@@ -479,7 +479,7 @@ public class LitJsonFxJsonObjectConverter : IServiceObjectConverter
             string platformUserID = dataArray[i]["PlatformUserId"] != null ? dataArray[i]["PlatformUserId"].ToString() : null;
             string userID = dataArray[i]["userID"] != null ? dataArray[i]["userID"].ToString() : null;
             string newValue = dataArray[i]["Value"] != null ? dataArray[i]["Value"].ToString() : null;
-            multipleUserDataValue value = new multipleUserDataValue(userName, platformID, platformUserID, userID, newValue);
+            MultipleUserDataValue value = new MultipleUserDataValue(userName, platformID, platformUserID, userID, newValue);
             allValues.Add(value);
         }
         return allValues;
