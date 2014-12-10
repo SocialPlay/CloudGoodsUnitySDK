@@ -1251,16 +1251,16 @@ public class CloudGoods : MonoBehaviour//, IServiceCalls
     }
 
 
-    static public void RetrieveUserDataValue(string Key, Action<string> callback)
+    static public void RetrieveUserDataValue(string Key, Action<UserDataResponse> callback)
     {
         RetrieveUserDataValue(Key, callback, user.userID);
     }
 
-    static public void RetrieveUserDataValue(string Key, Action<string> callback, Guid AlternateUserID)
+    static public void RetrieveUserDataValue(string Key, Action<UserDataResponse> callback, Guid AlternateUserID)
     {
         string url = string.Format("{0}RetrieveUserDataValue?appId={1}&UserID={2}&Key={3}", Url, AppID, AlternateUserID, WWW.EscapeURL(Key));
         WWW www = new WWW(url);
-        Get().StartCoroutine(Get().ServiceGetString(www, callback));
+        Get().StartCoroutine(Get().ServiceUserDataResponse(www, callback));
     }
 
 
@@ -1296,12 +1296,12 @@ public class CloudGoods : MonoBehaviour//, IServiceCalls
     }
 
 
-    static public void RetrieveAllUserDataOfKey(string Key, Action<List<UserDataValue>> callback)
+    static public void RetrieveAllUserDataOfKey(string Key, Action<List<multipleUserDataValue>> callback)
     {
         RetrieveAllUserDataOfKey(Key, callback, user.userID);
     }
 
-    static public void RetrieveAllUserDataOfKey(string Key, Action<List<UserDataValue>> callback, Guid AlternateUserID)
+    static public void RetrieveAllUserDataOfKey(string Key, Action<List<multipleUserDataValue>> callback, Guid AlternateUserID)
     {
         string url = string.Format("{0}RetrieveAllUserDataOfKey?appId={1}&UserID={2}&Key={3}", Url, AppID, AlternateUserID, WWW.EscapeURL(Key));
         WWW www = new WWW(url);
@@ -1605,7 +1605,7 @@ public class CloudGoods : MonoBehaviour//, IServiceCalls
         }
     }
 
-    IEnumerator ServiceUserDataValueResponse(WWW www, Action<List<UserDataValue>> callback)
+    IEnumerator ServiceUserDataValueResponse(WWW www, Action<List<multipleUserDataValue>> callback)
     {
         yield return www;
 
@@ -1674,6 +1674,29 @@ public class CloudGoods : MonoBehaviour//, IServiceCalls
         }
     }
 
+    //UserDataResponse
+    IEnumerator ServiceUserDataResponse(WWW www, Action<UserDataResponse> callback)
+    {
+        yield return www;
+
+        // check for errors
+        if (www.error == null)
+        {
+            try
+            {
+                callback(serviceConverter.ConvertToUserDataResponse(www.text));
+            }
+            catch (Exception e)
+            {
+                Debug.LogError(e.Message);
+                Debug.LogError(www.text);
+            }
+        }
+        else
+        {
+            if (onErrorEvent != null) onErrorEvent("Error: " + www.error);
+        }
+    }
     #endregion
 
     #region Encryption

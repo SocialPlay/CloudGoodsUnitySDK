@@ -466,9 +466,9 @@ public class LitJsonFxJsonObjectConverter : IServiceObjectConverter
         return consumeResponse;
     }
 
-    public List<UserDataValue> ConvertToUserDataValueList(string dataString)
+    public List<multipleUserDataValue> ConvertToUserDataValueList(string dataString)
     {
-        List<UserDataValue> allValues = new List<UserDataValue>();
+        List<multipleUserDataValue> allValues = new List<multipleUserDataValue>();
         string parsedString = ParseString(dataString);
         JsonData dataArray = LitJson.JsonMapper.ToObject(parsedString);
 
@@ -479,7 +479,7 @@ public class LitJsonFxJsonObjectConverter : IServiceObjectConverter
             string platformUserID = dataArray[i]["PlatformUserId"] != null ? dataArray[i]["PlatformUserId"].ToString() : null;
             string userID = dataArray[i]["userID"] != null ? dataArray[i]["userID"].ToString() : null;
             string newValue = dataArray[i]["Value"] != null ? dataArray[i]["Value"].ToString() : null;
-            UserDataValue value = new UserDataValue(userName, platformID, platformUserID, userID, newValue);
+            multipleUserDataValue value = new multipleUserDataValue(userName, platformID, platformUserID, userID, newValue);
             allValues.Add(value);
         }
         return allValues;
@@ -494,8 +494,8 @@ public class LitJsonFxJsonObjectConverter : IServiceObjectConverter
 
         if (!int.TryParse(dataArray["GenerationId"].ToString(), out generatedItems.GenerationID))
         {
-             Debug.LogError("GenerationID was not valid");
-             generatedItems.GenerationID = 0;
+            Debug.LogError("GenerationID was not valid");
+            generatedItems.GenerationID = 0;
         }
 
         ItemDataList itemDataList = new SocialPlay.Data.ItemDataList();
@@ -527,7 +527,7 @@ public class LitJsonFxJsonObjectConverter : IServiceObjectConverter
         generatedItems.generatedItems = items;
 
         return generatedItems;
-        
+
     }
 
     public List<GiveGeneratedItemResult> ConvertToListGiveGenerationItemResult(string dataString)
@@ -571,6 +571,18 @@ public class LitJsonFxJsonObjectConverter : IServiceObjectConverter
             return new List<GiveGeneratedItemResult>();
         }
     }
+    public UserDataResponse ConvertToUserDataResponse(string dataString)
+    {
+        string parsedString = ParseString(dataString);
+        JsonData dataArray = LitJson.JsonMapper.ToObject(parsedString);
+
+        UserDataResponse data = new UserDataResponse();
+        data.isExisting = bool.Parse(dataArray["isExisting"].ToString());
+        data.userValue = (dataArray["userValue"] != null ? dataArray["userValue"].ToString() : null);
+        data.lastUpdated = (dataArray["lastUpdated"] != null ? DateTime.Parse(dataArray["lastUpdated"].ToString()) : DateTime.Now);
+        return data;
+    }
+
 
     string ParseString(string dataString)
     {
@@ -588,5 +600,8 @@ public class LitJsonFxJsonObjectConverter : IServiceObjectConverter
     {
         return bool.Parse(ParseString(dataString));
     }
+
+
+
 
 }

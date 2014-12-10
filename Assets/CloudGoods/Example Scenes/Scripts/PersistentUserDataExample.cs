@@ -76,7 +76,15 @@ public class PersistentUserDataExample : MonoBehaviour
 
     public void RetrieveUserDataValue()
     {
-        CloudGoods.RetrieveUserDataValue(RetrieveKey.text, (r) => { loadResponse.text = r; }, User);
+        CloudGoods.RetrieveUserDataValue(RetrieveKey.text, (r) =>
+        {
+            if (r.isExisting)
+                loadResponse.text = r.userValue;
+            else
+            {
+                loadResponse.text = "User Does not have a value for that key".ToRichColor(Color.yellow);
+            }
+        }, User);
     }
 
 
