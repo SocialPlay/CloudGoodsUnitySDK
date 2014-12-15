@@ -151,6 +151,18 @@ public class CloudGoods : MonoBehaviour//, IServiceCalls
 
     static public List<ItemData> userItems { get; private set; }
 
+    static public List<GenerationItemPackage> GenerationPackages
+    { 
+        get 
+        {
+            if (generationItemPackages == null)
+                generationItemPackages = new List<GenerationItemPackage>();
+
+            return generationItemPackages; 
+        } 
+    }
+
+
     /// <summary>
     /// Current amount of standard currency. You can listen to the event OnFreeCurrency which will be triggered everytime this value changes.
     /// </summary>
@@ -315,6 +327,7 @@ public class CloudGoods : MonoBehaviour//, IServiceCalls
     static IServiceObjectConverter mService;
     static ItemDataConverter mDataConverter;
 
+    static List<GenerationItemPackage> generationItemPackages;
     static bool isGettingWorldInfo = false;
     static int mFree = 0;
     static int mPaid = 0;

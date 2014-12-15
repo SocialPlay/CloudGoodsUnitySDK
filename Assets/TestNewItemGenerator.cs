@@ -107,7 +107,6 @@ public class TestNewItemGenerator : MonoBehaviour {
 
         CloudGoods.GiveGeneratedItemToOwner("User", giveItems, generatedItems.GenerationID, 0, delegate(List<GiveGeneratedItemResult> Items)
         {
-
             Debug.Log("Start of Give item date NEW: " + newGiveItemTime.Millisecond + " end of time : " + DateTime.Now.Millisecond);
 
             TimeSpan timeSpan = DateTime.Now - newGiveItemTime;
