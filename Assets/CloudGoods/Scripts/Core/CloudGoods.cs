@@ -16,7 +16,9 @@ public class CloudGoods : MonoBehaviour//, IServiceCalls
     {
         GiveItem = 1,
         SetUserData = 2,
-        DeleteUserData = 3
+        DeleteUserData = 3,
+        SetAppData =4,
+        DeleteAppData=5
     }
 
     #region Global Events/Callbacks
@@ -1264,16 +1266,16 @@ public class CloudGoods : MonoBehaviour//, IServiceCalls
     }
 
 
-    static public void RetrieveUserDataValue(string Key, Action<string> callback)
+    static public void RetrieveUserDataValue(string Key, Action<PersistentDataResponse> callback)
     {
         RetrieveUserDataValue(Key, callback, user.userID);
     }
 
-    static public void RetrieveUserDataValue(string Key, Action<string> callback, Guid AlternateUserID)
+    static public void RetrieveUserDataValue(string Key, Action<PersistentDataResponse> callback, Guid AlternateUserID)
     {
         string url = string.Format("{0}RetrieveUserDataValue?appId={1}&UserID={2}&Key={3}", Url, AppID, AlternateUserID, WWW.EscapeURL(Key));
         WWW www = new WWW(url);
-        Get().StartCoroutine(Get().ServiceGetString(www, callback));
+        Get().StartCoroutine(Get().ServiceUserDataResponse(www, callback));
     }
 
 
@@ -1296,12 +1298,12 @@ public class CloudGoods : MonoBehaviour//, IServiceCalls
     }
 
 
-    static public void RetriveAllUserDataValues(Action<Dictionary<string, string>> callback)
+    static public void RetrieveAllUserDataValues(Action<Dictionary<string, string>> callback)
     {
-        RetriveAllUserDataValues(callback, user.userID);
+        RetrieveAllUserDataValues(callback, user.userID);
     }
 
-    static public void RetriveAllUserDataValues(Action<Dictionary<string, string>> callback, Guid AlternateUserID)
+    static public void RetrieveAllUserDataValues(Action<Dictionary<string, string>> callback, Guid AlternateUserID)
     {
         string url = string.Format("{0}RetrieveAllUserDataValues?appId={1}&UserID={2}", Url, AppID, AlternateUserID);
         WWW www = new WWW(url);
@@ -1309,12 +1311,12 @@ public class CloudGoods : MonoBehaviour//, IServiceCalls
     }
 
 
-    static public void RetrieveAllUserDataOfKey(string Key, Action<List<UserDataValue>> callback)
+    static public void RetrieveAllUserDataOfKey(string Key, Action<List<MultipleUserDataValue>> callback)
     {
         RetrieveAllUserDataOfKey(Key, callback, user.userID);
     }
 
-    static public void RetrieveAllUserDataOfKey(string Key, Action<List<UserDataValue>> callback, Guid AlternateUserID)
+    static public void RetrieveAllUserDataOfKey(string Key, Action<List<MultipleUserDataValue>> callback, Guid AlternateUserID)
     {
         string url = string.Format("{0}RetrieveAllUserDataOfKey?appId={1}&UserID={2}&Key={3}", Url, AppID, AlternateUserID, WWW.EscapeURL(Key));
         WWW www = new WWW(url);
@@ -1323,6 +1325,55 @@ public class CloudGoods : MonoBehaviour//, IServiceCalls
 
 
 
+    #endregion
+
+    #region App Data Calls
+    static public void SaveAppData(string Key, string Value, Action<string> callback)
+    {
+        SaveAppData(Key, Value, callback, user.userID);
+    }
+
+    static public void SaveAppData(string Key, string Value, Action<string> callback, Guid AlternateAppID)
+    {
+        GetToken(TokenType.SetAppData, (token) =>
+        {
+            SaveAppDataRequest payload = new SaveAppDataRequest();
+            payload.Key = Key;
+            payload.Value = Value;
+            payload.AppID = AppID;
+            string newStringRequest = JsonMapper.ToJson(payload);
+            SecureCall(token, newStringRequest, callback);
+        });
+    }
+
+
+
+    static public void RetrieveAppDataValue(string Key, Action<PersistentDataResponse> callback)
+    {
+        string url = string.Format("{0}RetrieveAppDataValue?appId={1}&Key={2}", Url, AppID, WWW.EscapeURL(Key));
+        WWW www = new WWW(url);
+        Get().StartCoroutine(Get().ServiceUserDataResponse(www, callback));
+    }
+
+    static public void DeleteAppDataValue(string Key, Action<string> callback)
+    {
+        GetToken(TokenType.DeleteAppData, (token) =>
+        {
+            DeleteAppDataRequest payload = new DeleteAppDataRequest();
+            payload.Key = Key;      
+            payload.AppID = AppID;
+            string newStringRequest = JsonMapper.ToJson(payload);
+            SecureCall(token, newStringRequest, callback);
+        });
+    }
+
+    static public void RetrieveAllAppDataValues(Action<Dictionary<string, string>> callback)
+    {        
+        string url = string.Format("{0}RetrieveAllAppDataValues?appId={1}", Url, AppID);
+        Debug.Log(url);
+        WWW www = new WWW(url);
+        Get().StartCoroutine(Get().ServiceGetDictionary(www, callback));
+    }
     #endregion
 
     #region IEnumeratorCalls
@@ -1618,7 +1669,7 @@ public class CloudGoods : MonoBehaviour//, IServiceCalls
         }
     }
 
-    IEnumerator ServiceUserDataValueResponse(WWW www, Action<List<UserDataValue>> callback)
+    IEnumerator ServiceUserDataValueResponse(WWW www, Action<List<MultipleUserDataValue>> callback)
     {
         yield return www;
 
@@ -1687,6 +1738,29 @@ public class CloudGoods : MonoBehaviour//, IServiceCalls
         }
     }
 
+    //UserDataResponse
+    IEnumerator ServiceUserDataResponse(WWW www, Action<PersistentDataResponse> callback)
+    {
+        yield return www;
+
+        // check for errors
+        if (www.error == null)
+        {
+            try
+            {
+                callback(serviceConverter.ConvertToUserDataResponse(www.text));
+            }
+            catch (Exception e)
+            {
+                Debug.LogError(e.Message);
+                Debug.LogError(www.text);
+            }
+        }
+        else
+        {
+            if (onErrorEvent != null) onErrorEvent("Error: " + www.error);
+        }
+    }
     #endregion
 
     #region Encryption

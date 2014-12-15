@@ -61,7 +61,7 @@ public class CloudGoodsSettings : ScriptableObject
     {
         get
         {
-            return instance.appSecret;
+            return instance.appSecret.Trim();
         }
     }
 
@@ -69,7 +69,7 @@ public class CloudGoodsSettings : ScriptableObject
     {
         get
         {
-            return instance.appID;
+            return instance.appID.Trim();
         }
     }
 
@@ -77,7 +77,7 @@ public class CloudGoodsSettings : ScriptableObject
     {
         get
         {
-            return instance.url;
+            return instance.url.Trim();
         }
     }
 
@@ -101,7 +101,7 @@ public class CloudGoodsSettings : ScriptableObject
     {
         get
         {
-            return instance.androidKey;
+            return instance.androidKey.Trim();
         }
     }
     static public List<ItemPrefabInitilizer.DropPrefab> ExtraItemPrefabs
