@@ -46,8 +46,7 @@ public class UnityUICloudGoodsLogin : MonoBehaviour
     void OnEnable()
     {
         CloudGoods.OnUserLogin += RecivedLoginResponce;
-        CloudGoods.OnUserInfo += RecivedUserGuid;
-        CloudGoods.OnUserRegister += RegisterMessageResponce;
+        CloudGoods.OnUserAuthorized += RecivedUserGuid;
         CloudGoods.OnForgotPassword += ForgotPasswordResponce;
         CloudGoods.OnVerificationSent += ResentVerificationResponce;
         CloudGoods.onLogout += OnLogout;
@@ -56,8 +55,7 @@ public class UnityUICloudGoodsLogin : MonoBehaviour
     void OnDisable()
     {
         CloudGoods.OnUserLogin -= RecivedLoginResponce;
-        CloudGoods.OnUserInfo -= RecivedUserGuid;
-        CloudGoods.OnUserRegister -= RegisterMessageResponce;
+        CloudGoods.OnUserAuthorized -= RecivedUserGuid;
         CloudGoods.OnForgotPassword -= ForgotPasswordResponce;
         CloudGoods.OnVerificationSent -= ResentVerificationResponce;
         CloudGoods.onLogout -= OnLogout;
@@ -141,20 +139,6 @@ public class UnityUICloudGoodsLogin : MonoBehaviour
 
         resendVerificationTextObject.SetActive(false);
         loginErrorLabel.text = recivedMessage.message;
-    }
-
-    void RegisterMessageResponce(UserResponse responce)
-    {
-        resendVerificationTextObject.SetActive(false);
-
-        if (responce.code == 0)
-        {
-            confirmationStatus.text = "Verification Email has been sent to your Email";
-        }
-        else
-        {
-            confirmationStatus.text = responce.message;
-        }
     }
 
     void LoginSuccess(Guid userID)
@@ -243,8 +227,19 @@ public class UnityUICloudGoodsLogin : MonoBehaviour
 
     void OnRegisteredUser(UserResponse userResponse)
     {
+        resendVerificationTextObject.SetActive(false);
         confirmationStatus.gameObject.SetActive(true);
-        confirmationStatus.text = userResponse.message;
+
+        Debug.Log("response code for register on callback: " + userResponse.code + " / message: " + userResponse.message);
+
+        if (userResponse.code == 0)
+        {
+            confirmationStatus.text = "Verification Email has been sent to your Email";
+        }
+        else
+        {
+            confirmationStatus.text = userResponse.message;
+        }
     }
 
     public void ForgotPassword()

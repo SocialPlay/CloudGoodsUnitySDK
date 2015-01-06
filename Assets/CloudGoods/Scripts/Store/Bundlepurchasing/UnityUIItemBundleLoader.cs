@@ -31,7 +31,7 @@ public class UnityUIItemBundleLoader : MonoBehaviour {
             GameObject newItemBundle = (GameObject)GameObject.Instantiate(ItemBundleButtonObject);
             UnityUIItemBundle ItemBundle = newItemBundle.GetComponent<UnityUIItemBundle>();
 
-            newItemBundle.transform.parent = gridObject.transform;
+            newItemBundle.transform.SetParent(gridObject.transform);
             newItemBundle.transform.localScale = new Vector3(1, 1, 1);
 
             ItemBundle.SetupUnityUIItemBundle(bundle, bundlePurchasing);

@@ -33,7 +33,7 @@ public class UnityUIStoreLoader : StoreLoader
             for (int i = pageNum * maxGridAmount; i < (pageNum * maxGridAmount + PageMax); i++)
             {
                 GameObject newItem = (GameObject)GameObject.Instantiate(itemButtonPrefab);
-                newItem.transform.parent = transform;
+                newItem.transform.SetParent(transform);
                 newItem.transform.localPosition = Vector3.zero;
                 newItem.transform.localScale = Vector3.one;
                 currentPageItems.Add(newItem);
@@ -58,7 +58,7 @@ public class UnityUIStoreLoader : StoreLoader
         for (int i = pageAmount-1; i > -1; i--)
         {
             GameObject newPage = (GameObject)GameObject.Instantiate(pageButtonPrefab);
-            newPage.transform.parent = pageGridObject.transform;
+            newPage.transform.SetParent(pageGridObject.transform);
             newPage.transform.localScale = new Vector3(1, 1, 1);
 
             UnityUIPageInfo pageInfo = newPage.GetComponent<UnityUIPageInfo>();

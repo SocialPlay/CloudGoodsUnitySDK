@@ -203,16 +203,6 @@ public class LitJsonFxJsonObjectConverter : IServiceObjectConverter
 
         for (int i = 0; i < storeItemsJsonArray.Count; i++)
         {
-            for (int e = 0, emax = storeItemsJsonArray[i].Count; e < emax; e++)
-            {
-                if (storeItemsJsonArray[i][e].IsArray)
-                {
-                    for (int x = 0, xmax = storeItemsJsonArray[i][e].Count; x < xmax; x++)
-                    {
-                        Debug.Log("storeItem " + storeItemsJsonArray[i][e][x]);
-                    }
-                }
-            }
             StoreItem storeItemInfo = new StoreItem();
             storeItemInfo.addedDate = DateTime.Parse(storeItemsJsonArray[i]["AddDate"].ToString());
             Debug.Log("Added date: " + storeItemInfo.addedDate.ToString());

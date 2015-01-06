@@ -40,8 +40,6 @@ public class GenerationItemPackage : MonoBehaviour {
             generationItem.Amount += selectedItem.Amount;
         else
             selectedItems.Add(selectedItem);
-
-        Debug.Log("Item ID: " + selectedItem.ItemId + " with amount: " + selectedItem.Amount + "  has been added to generation package: " + GenerationID);
     }
 
     void Update()
@@ -52,7 +50,6 @@ public class GenerationItemPackage : MonoBehaviour {
 
             if (timer >= maxSendPackageTimer)
             {
-                Debug.Log("Generation Items Sent Package ID: " + GenerationID);
                 CloudGoods.GiveGeneratedItemToOwner(UserType, selectedItems, GenerationID, Location, OnReceivedGiveItemGenerationItemResult);
                 hasSentPackage = true;
             }
@@ -61,10 +58,7 @@ public class GenerationItemPackage : MonoBehaviour {
 
     void OnReceivedGiveItemGenerationItemResult(List<GiveGeneratedItemResult> itemResults)
     {
-        Debug.Log("Finished giving generationItems");
-
         targetContainer.UpdateContainerWithItems(itemResults);
-
     }
 
 }

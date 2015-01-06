@@ -26,7 +26,6 @@ public class CloudGoods : MonoBehaviour//, IServiceCalls
     static public event Action<string> onErrorEvent;
     static public event Action<UserResponse> OnUserLogin;
     static public event Action onLogout;
-    static public event Action<CloudGoodsUser> OnUserInfo;
     static public event Action<UserResponse> OnUserRegister;
     static public event Action<UserResponse> OnForgotPassword;
     static public event Action<UserResponse> OnVerificationSent;
@@ -756,10 +755,6 @@ public class CloudGoods : MonoBehaviour//, IServiceCalls
 
     static public void Login(string userEmail, string password, Action<UserResponse> onSuccess)
     {
-        Debug.Log("here");
-        Debug.Log("appID:" + AppID);
-        Debug.Log("guid app id: " + GuidAppID.ToString());
-
         string url = string.Format("{0}SPLoginUserLogin?gameID={1}&userEMail={2}&userPassword={3}", Url, GuidAppID.ToString(), WWW.EscapeURL(userEmail), WWW.EscapeURL(password));
 
         WWW www = new WWW(url);
@@ -769,7 +764,7 @@ public class CloudGoods : MonoBehaviour//, IServiceCalls
             if (response.code == 7) if (onErrorEvent != null) onErrorEvent("ServerRelatedError");
             if (response.code == 0)
             {
-                if (OnUserInfo != null)
+                if (OnUserAuthorized != null)
                 {
 
                     Debug.Log(response.message);
@@ -778,17 +773,14 @@ public class CloudGoods : MonoBehaviour//, IServiceCalls
 
                     LoginUserInfo userInfo = new LoginUserInfo(new Guid(data["ID"].ToString()), data["name"].ToString(), data["email"].ToString());
 
-                    //UserResponse responce = new UserResponse(int.Parse(data["code"].ToString()), data["message"].ToString(), userInfo);
-
                     CloudGoodsUser ui = new CloudGoodsUser(userInfo.ID.ToString(), userInfo.name, userInfo.email);
                     AuthorizeUser(ui);
-                    OnUserInfo(ui);
+                    onSuccess(response);
                 }
             }
             else
             {
                 if (OnUserLogin != null) OnUserLogin(response);
-                if (onSuccess != null) onSuccess(response);
             }
         }));
     }
@@ -1634,6 +1626,8 @@ public class CloudGoods : MonoBehaviour//, IServiceCalls
         {
             try
             {
+                Debug.Log("Register webservice callback: " + www.text);
+
                 callback(serviceConverter.ConvertToSPLoginResponse(www.text));
             }
             catch
