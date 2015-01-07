@@ -52,11 +52,6 @@ public class ItemDataComponent : MonoBehaviour
 
     public void Pickup(bool addToContainer)
     {
-
-#if UNITY_EDITOR
-        Debug.Log("ItemData Pickup " + itemData);
-#endif
-
         if (onPickup != null) onPickup(itemData);
 
         if (addToContainer) GetItemsContainerInserter.instance.GetGameItem(new List<ItemData>(new ItemData[1] { itemData }));

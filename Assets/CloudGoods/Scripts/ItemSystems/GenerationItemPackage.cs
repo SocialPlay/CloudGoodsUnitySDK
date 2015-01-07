@@ -59,6 +59,7 @@ public class GenerationItemPackage : MonoBehaviour {
     void OnReceivedGiveItemGenerationItemResult(List<GiveGeneratedItemResult> itemResults)
     {
         targetContainer.UpdateContainerWithItems(itemResults);
+        Destroy(gameObject);
     }
 
 }

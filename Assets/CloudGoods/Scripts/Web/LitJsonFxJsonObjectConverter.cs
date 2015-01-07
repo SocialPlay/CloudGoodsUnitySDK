@@ -7,7 +7,6 @@ using LitJson;
 
 public class LitJsonFxJsonObjectConverter : IServiceObjectConverter
 {
-
     public List<ItemData> ConvertToItemDataList(string ObjectData)
     {
         ItemDataList itemDataList = new SocialPlay.Data.ItemDataList();
@@ -507,6 +506,7 @@ public class LitJsonFxJsonObjectConverter : IServiceObjectConverter
             newItemData.BaseItemID = int.Parse(itemsData[i]["BaseItemID"].ToString());
             newItemData.Description = itemsData[i]["Description"].ToString();
             newItemData.Behaviours = itemsData[i]["Behaviours"].ToString();
+            newItemData.AssetBundleName = itemsData[i]["AssetBundleName"].ToString();
             //newItemData.Tags = itemsData[i]["tags"].ToString();
 
             itemDataList.Add(newItemData);

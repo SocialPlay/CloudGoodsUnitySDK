@@ -8,11 +8,11 @@ public class ItemPickupOnClick : MonoBehaviour {
 
         if (Input.GetMouseButtonDown(0))
         {
-            Debug.Log("Click");
             RaycastHit hit;
             if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit))
             {
-                hit.collider.gameObject.GetComponent<ItemDataComponent>().Pickup(true);
+                if(hit.collider.gameObject.GetComponent<ItemDataComponent>() != null)
+                    hit.collider.gameObject.GetComponent<ItemDataComponent>().Pickup(true);
             }
         }
 	}

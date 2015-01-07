@@ -55,8 +55,6 @@ public class GetItemsContainerInserter : MonoBehaviour, IGetItems
     {
         GenerationItemPackage generationItemPackage = CloudGoods.GenerationPackages.Find(x => x.UserType == UserType && x.GenerationID == GenerationID && x.Location == location);
 
-        generationItemPackage = CloudGoods.GenerationPackages.Find(x => x.UserType == UserType && x.GenerationID == GenerationID && x.Location == location);
-
         if (generationItemPackage != null && !generationItemPackage.HasPackageBeenSent())
         {
             generationItemPackage.AddItemID(selectedItem);
