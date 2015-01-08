@@ -52,7 +52,7 @@ public class ItemGenerator : MonoBehaviour
         }
 
         //CloudGoods.GenerateItemsAtLocation("Session", 0, minEnergy, MaxEnergy, OnReceivedGeneratedItems, andTagsString);
-        CloudGoods.NewGenerateItems(minEnergy, MaxEnergy, OnReceivedGeneratedItems);
+        CloudGoods.NewGenerateItems(minEnergy, MaxEnergy, OnReceivedGeneratedItems, andTagsString);
     }
 
     public void OnReceivedGeneratedItems(GeneratedItems generatedItems)

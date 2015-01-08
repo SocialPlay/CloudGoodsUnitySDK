@@ -19,25 +19,19 @@ public class ItemIDRestriction : MonoBehaviour, IContainerRestriction {
     {
         if (IsExcluded)
         {
-            foreach (int itemID in ItemIDList)
+            if (ItemIDList.Exists(x => x == itemData.ItemID))
             {
-                if (itemData.ItemID == itemID)
-                {
-                    Debug.LogWarning("Item Resticted for being added to container because it has a Item ID Restriction");
-                    return true;
-                }
+                Debug.LogWarning("Item Resticted for being added to container because it has a Item ID Restriction");
+                return true;
             }
 
             return false;
         }
         else
         {
-            foreach (int itemID in ItemIDList)
-            {
-                if (itemData.ItemID == itemID)
-                    return false;
-            }
-
+            if (ItemIDList.Exists(x => x == itemData.ItemID))
+                return false;
+           
             Debug.LogWarning("Item Resticted for being added to container because it has a Item ID Restriction");
             return true;
         }
