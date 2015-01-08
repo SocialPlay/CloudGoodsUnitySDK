@@ -10,7 +10,7 @@ using LitJson;
 public class ItemGenerator : MonoBehaviour
 {
     public int minEnergy = 1;
-    public int MaxEnergy = 100;
+    public int TotalEnergyToGenerate = 100;
 
     public List<string> AndTags;
     public List<string> OrTags;
@@ -52,7 +52,7 @@ public class ItemGenerator : MonoBehaviour
         }
 
         //CloudGoods.GenerateItemsAtLocation("Session", 0, minEnergy, MaxEnergy, OnReceivedGeneratedItems, andTagsString);
-        CloudGoods.NewGenerateItems(minEnergy, MaxEnergy, OnReceivedGeneratedItems, andTagsString);
+        CloudGoods.NewGenerateItems(minEnergy, TotalEnergyToGenerate, OnReceivedGeneratedItems, andTagsString);
     }
 
     public void OnReceivedGeneratedItems(GeneratedItems generatedItems)
