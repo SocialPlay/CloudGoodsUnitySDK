@@ -35,18 +35,12 @@ public class ItemContainerManager
                     ItemData newItemData = new ItemData();
                     newItemData.SetItemData(movingItemData);
 
-                    Debug.Log("stack before remove: " + newItemData.stackSize + " moveable stack before Remove: " + movingItemData.stackSize);
-
                     if (movingItemData.ownerContainer != null)
                     {
                         movingItemData.ownerContainer.Remove(movingItemData, true, targetAddState.possibleAddAmount);
                     }
 
-                    Debug.Log("stack after remove: " + newItemData.stackSize + " moveable stack after Remove: " + movingItemData.stackSize);
-
                     targetContainer.Add(newItemData, targetAddState.possibleAddAmount);
-
-                    Debug.Log("stack after add: " + newItemData.stackSize + " moveable stack after add: " + movingItemData.stackSize);
 
                     break;
                 case ContainerAddState.ActionState.No:
@@ -59,7 +53,7 @@ public class ItemContainerManager
         }
         catch (Exception e)
         {
-            Debug.Log(e.Message);
+            Debug.LogError(e.Message);
 
             return ContainerAddState.ActionState.No;
         }

@@ -6,32 +6,32 @@ using Newtonsoft.Json.Linq;
 [System.Serializable]
 public class ItemData
 {
-    internal ItemContainer ownerContainer = null;
-    internal int stackSize = 0;
+    public ItemContainer ownerContainer = null;
+    public int stackSize = 0;
 
     public string itemName = "";
-    internal Guid stackID = Guid.Empty;
-    internal int classID = 0;
-    internal int CollectionID = 0;
-    internal int ItemID = 0;
-    internal int totalEnergy = 0;
-    internal int baseEnergy = 0;
-    internal int salePrice = 0;
-    internal List<BehaviourDefinition> behaviours = new List<BehaviourDefinition>();
-    internal string description = "";
-    internal int quality = 0;
-    internal string imageName = "";
-    internal bool isOwned = false;
-    internal int persistantLocation = -1;
+    public Guid stackID = Guid.Empty;
+    public int classID = 0;
+    public int CollectionID = 0;
+    public int ItemID = 0;
+    public int totalEnergy = 0;
+    public int baseEnergy = 0;
+    public int salePrice = 0;
+    public List<BehaviourDefinition> behaviours = new List<BehaviourDefinition>();
+    public string description = "";
+    public int quality = 0;
+    public string imageName = "";
+    public bool isOwned = false;
+    public int persistantLocation = -1;
 
-    internal Dictionary<string, float> stats;
-    internal string assetURL;
-    internal List<string> tags;
+    public Dictionary<string, float> stats;
+    public string assetURL;
+    public List<string> tags;
 
     public bool isLocked = false;
 
-    internal bool IsGenerated = false;
-    internal int GenerationID = 0;
+    public bool IsGenerated = false;
+    public int GenerationID = 0;
 
     /// <summary>
     /// Visual UI item reference.

@@ -13,6 +13,8 @@ public class LitJsonFxJsonObjectConverter : IServiceObjectConverter
 
         string parsedString = ParseString(ObjectData);
 
+        Debug.Log(parsedString);
+
         if (parsedString == "[]")
             return new List<ItemData>();
 

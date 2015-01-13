@@ -53,6 +53,7 @@ public class ItemContainerDisplay : MonoBehaviour
     {
         GameObject newItem = GameObject.Instantiate(CloudGoodsSettings.DefaultUIItem) as GameObject;
         ItemDataDisplay newDisplay = newItem.GetComponent<ItemDataDisplay>();
+        newDisplay.itemObject = newItem.GetComponent<ItemDataComponent>();
         newItem.GetComponent<ItemDataComponent>().itemData = itemData;
         newItem.name = itemData.itemName;
         newItem.transform.SetParent(childTarget);
@@ -78,6 +79,8 @@ public class ItemContainerDisplay : MonoBehaviour
 
     public virtual void RemovedItem(ItemData itemData, int amount, bool arg3)
     {
+        Debug.Log("removed item: " + itemData);
+
         ItemDataDisplay selected = FindDisplayMatch(itemData);
         if (selected != null)
         {
