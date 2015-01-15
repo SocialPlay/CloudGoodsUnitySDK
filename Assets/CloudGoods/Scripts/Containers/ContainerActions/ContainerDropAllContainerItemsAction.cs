@@ -60,7 +60,7 @@ public class ContainerDropAllContainerItemsAction : ContainerActions
 
                 data.stackID = moveInfo.NewStackID;
 
-                itemDrop.DropItemIntoWorld(data, TransformForDropPosition.position, DropObjDefaultModel);
+                itemDrop.DropItemIntoWorld(data, TransformForDropPosition.position, DropObjDefaultModel, false);
             }
         }
     }

@@ -17,7 +17,7 @@ public class GenerationItemPackage : MonoBehaviour {
     bool hasSentPackage = false;
 
     float timer = 0.0f;
-    float maxSendPackageTimer = 2.0f;
+    float maxSendPackageTimer = 3.0f;
 
     public bool HasPackageBeenSent()
     {
@@ -52,6 +52,7 @@ public class GenerationItemPackage : MonoBehaviour {
             {
                 CloudGoods.GiveGeneratedItemToOwner(UserType, selectedItems, GenerationID, Location, OnReceivedGiveItemGenerationItemResult);
                 hasSentPackage = true;
+                timer = 0.0f;
             }
         }
     }
@@ -59,6 +60,7 @@ public class GenerationItemPackage : MonoBehaviour {
     void OnReceivedGiveItemGenerationItemResult(List<GiveGeneratedItemResult> itemResults)
     {
         targetContainer.UpdateContainerWithItems(itemResults);
+        CloudGoods.GenerationPackages.Remove(this);
         Destroy(gameObject);
     }
 

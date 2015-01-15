@@ -926,6 +926,7 @@ public class CloudGoods : MonoBehaviour//, IServiceCalls
         Get().StartCoroutine(Get().ServiceGetString(www, (string value) =>
         {
             standardCurrency = System.Convert.ToInt32(value);
+            OnStandardCurrency(standardCurrency);
             if (callback != null) callback(standardCurrency);
         }));
     }
@@ -939,6 +940,7 @@ public class CloudGoods : MonoBehaviour//, IServiceCalls
         Get().StartCoroutine(Get().ServiceGetString(www, (string value) =>
         {
             premiumCurrency = System.Convert.ToInt32(value);
+            OnPremiumCurrency(premiumCurrency);
             if (callback != null) callback(premiumCurrency);
         }));
     }

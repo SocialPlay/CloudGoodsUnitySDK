@@ -27,11 +27,6 @@ public class GetItemsContainerInserter : MonoBehaviour, IGetItems
             throw new Exception("You must provide a container to your GameItemContainerInserter");
         else
         {
-            if (onReciveItems != null)
-            {
-                onReciveItems(items);
-            }
-
             List<SelectedGenerationItem> giveItems = new List<SelectedGenerationItem>();
 
             int GenerationID = 0;
@@ -57,6 +52,7 @@ public class GetItemsContainerInserter : MonoBehaviour, IGetItems
 
         if (generationItemPackage != null && !generationItemPackage.HasPackageBeenSent())
         {
+            Debug.Log("Checking for generation packages: " + generationItemPackage + " has item been sent: " + generationItemPackage.HasPackageBeenSent());
             generationItemPackage.AddItemID(selectedItem);
         }
         else

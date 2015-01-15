@@ -36,7 +36,7 @@ public class ContainerDropItemAction : ContainerActions
             DropMovedItem(item, moveInfo);
         }
 
-        gameItemDrop.DropItemIntoWorld(item, DropTransform.position, CloudGoods.DefaultItemDrop);
+        gameItemDrop.DropItemIntoWorld(item, DropTransform.position, CloudGoods.DefaultItemDrop, false);
     }
 
     private static void DropMovedItem(ItemData item, MovedItemsInfo moveInfo)

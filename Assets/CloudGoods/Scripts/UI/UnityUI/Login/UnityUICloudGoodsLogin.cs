@@ -59,7 +59,6 @@ public class UnityUICloudGoodsLogin : MonoBehaviour
         CloudGoods.OnForgotPassword -= ForgotPasswordResponce;
         CloudGoods.OnVerificationSent -= ResentVerificationResponce;
         CloudGoods.onLogout -= OnLogout;
-        //CloudGoodsLogout.CloudGoodsUserLogout -= OnLogout;
     }
 
     void Start()

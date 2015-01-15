@@ -10,6 +10,8 @@ public class GetItemsDropper : MonoBehaviour, IGetItems
     //public ItemPrefabInitilizer prefabinitilizer;   
     public IGameObjectAction postDropObjectAction;
 
+    public bool IsDropSingleAmount = false;
+
     ItemDrop gameItemDrop;
 
     void Awake()
@@ -27,7 +29,7 @@ public class GetItemsDropper : MonoBehaviour, IGetItems
     {
         foreach (ItemData dropItem in dropItems)
         {
-            gameItemDrop.DropItemIntoWorld(dropItem, dropTransform.position, ItemPrefabInitilizer.GetPrefabToInstantiate(dropItem));
+            gameItemDrop.DropItemIntoWorld(dropItem, dropTransform.position, ItemPrefabInitilizer.GetPrefabToInstantiate(dropItem), IsDropSingleAmount);
         }
     }
 }
