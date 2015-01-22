@@ -13,8 +13,6 @@ public class LitJsonFxJsonObjectConverter : IServiceObjectConverter
 
         string parsedString = ParseString(ObjectData);
 
-        Debug.Log(parsedString);
-
         if (parsedString == "[]")
             return new List<ItemData>();
 
@@ -167,6 +165,7 @@ public class LitJsonFxJsonObjectConverter : IServiceObjectConverter
     public string ConvertToString(string dataString)
     {
         string newString = ParseString(dataString);
+
         return newString;
     }
 
@@ -174,6 +173,11 @@ public class LitJsonFxJsonObjectConverter : IServiceObjectConverter
     {
         return ParseBool(dataString);
 
+    }
+
+    public int ConvertToInt(string dataString)
+    {
+        return int.Parse(dataString);
     }
 
 
@@ -194,8 +198,6 @@ public class LitJsonFxJsonObjectConverter : IServiceObjectConverter
 
     public List<StoreItem> ConvertToStoreItems(string dataString)
     {
-        Debug.Log("Store call: " + dataString);
-
         string storeString = ParseString(dataString);
 
         List<StoreItem> storeItems = new List<StoreItem>();
@@ -206,7 +208,6 @@ public class LitJsonFxJsonObjectConverter : IServiceObjectConverter
         {
             StoreItem storeItemInfo = new StoreItem();
             storeItemInfo.addedDate = DateTime.Parse(storeItemsJsonArray[i]["AddDate"].ToString());
-            Debug.Log("Added date: " + storeItemInfo.addedDate.ToString());
             storeItemInfo.ID = int.Parse(storeItemsJsonArray[i]["ID"].ToString());
             storeItemInfo.itemName = storeItemsJsonArray[i]["Name"].ToString();
             storeItemInfo.itemID = int.Parse(storeItemsJsonArray[i]["ItemID"].ToString());
@@ -224,7 +225,6 @@ public class LitJsonFxJsonObjectConverter : IServiceObjectConverter
                 detail.propertyValue = (int)float.Parse(storeItemDetailArray[j]["Value"].ToString());
 
                 //detail.invertEnergy = (bool)storeItemDetailArray[j]["InvertEnergy"];
-                Debug.Log("storeitem detail : " + detail.propertyName);
                 storeItemDetails.Add(detail);
             }
 
@@ -524,7 +524,6 @@ public class LitJsonFxJsonObjectConverter : IServiceObjectConverter
 
     public List<GiveGeneratedItemResult> ConvertToListGiveGenerationItemResult(string dataString)
     {
-        Debug.Log("give generated items: " + dataString);
         List<GiveGeneratedItemResult> listGiveGenerationItemResult = new List<GiveGeneratedItemResult>();
 
         string parsedString = ParseString(dataString);
@@ -540,8 +539,6 @@ public class LitJsonFxJsonObjectConverter : IServiceObjectConverter
 
         if (statusCode == 1)
         {
-            Debug.Log("Message from give: " + dataArray["Message"].ToString());
-
             JsonData giveItemResultData = JsonMapper.ToObject(dataArray["Message"].ToString());
 
             for (int i = 0; i < giveItemResultData.Count; i++)
@@ -575,6 +572,30 @@ public class LitJsonFxJsonObjectConverter : IServiceObjectConverter
         return data;
     }
 
+
+    public PurchasePremiumCurrencyBundleResponse ConvertToPurchasePremiumCurrencyBundleResponse(string dataString)
+    {
+        PurchasePremiumCurrencyBundleResponse purchaseResponse = new PurchasePremiumCurrencyBundleResponse();
+
+        string parsedString = ParseString(dataString);
+        JsonData dataArray = LitJson.JsonMapper.ToObject(parsedString);
+
+        int statusCode;
+
+        if (!int.TryParse(dataArray["StatusCode"].ToString(), out statusCode))
+        {
+            Debug.LogError("Error from server while trying to purchase bundles");
+            return null;
+        }
+
+        purchaseResponse.StatusCode = statusCode;
+        purchaseResponse.Balance = int.Parse(dataArray["Balance"].ToString());
+
+        if (statusCode != 1)
+            purchaseResponse.Message = dataArray["Message"].ToString();
+
+        return purchaseResponse;
+    }
 
     string ParseString(string dataString)
     {

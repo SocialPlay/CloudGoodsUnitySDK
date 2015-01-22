@@ -77,7 +77,6 @@ public abstract class ItemDataDisplay : MonoBehaviour, IPointerEnterHandler, IPo
 
     }
 
-
     void OnReceivedItemTexture(ImageStatus statusMsg, Texture2D texture)
     {
         if (statusMsg != ImageStatus.Error)

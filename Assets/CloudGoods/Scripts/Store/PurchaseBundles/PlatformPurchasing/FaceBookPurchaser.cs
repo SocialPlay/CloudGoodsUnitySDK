@@ -6,11 +6,17 @@ using LitJson;
 
 public class FaceBookPurchaser : MonoBehaviour, IPlatformPurchaser
 {
-    public event Action<string> RecievedPurchaseResponse;
-    public event Action<string> OnPurchaseErrorEvent;
+    public event Action<PurchasePremiumCurrencyBundleResponse> RecievedPurchaseResponse;
+    public event Action<PurchasePremiumCurrencyBundleResponse> OnPurchaseErrorEvent;
     public int currentBundleID = 0;
 
     public IFacebookPurchase FacebookPurchasing;
+
+    void Start()
+    {
+        FacebookPurchasing = this.gameObject.AddComponent(Type.GetType("FacebookPurchasing")) as IFacebookPurchase;
+        FacebookPurchasing.Init();
+    }
 
     public void Purchase(PremiumBundle bundleItem, int amount, string userID)
     {
@@ -29,25 +35,23 @@ public class FaceBookPurchaser : MonoBehaviour, IPlatformPurchaser
         currentBundleID = int.Parse(bundleItem.BundleID);
         Console.WriteLine("Credit bundle purchase:  ID: " + bundleItem.BundleID + " Amount: " + amount);
         Debug.Log("ID: " + bundleItem.BundleID + "\nAmount: " + amount + "\nUserID: " + userID);
-        FacebookPurchasing.Purchase(bundleItem, amount, OnReceivedPurchaseResponse);
+        FacebookPurchasing.Purchase(bundleItem, amount, OnReceivedFacebookCurrencyPurchase);
     }
 
-    public void OnReceivedPurchaseResponse(string data)
+    public void OnReceivedFacebookCurrencyPurchase(string data)
     {
         Debug.Log("data: " + data);
         JsonMapper.ToObject(data);
 
-        //JsonData parsedData = JsonMapper.ToObject(data);
         Newtonsoft.Json.Linq.JToken parsedData = Newtonsoft.Json.Linq.JToken.Parse(data);
-
-        /*for(int i = 0, imax = parsedData.Count; i<imax; i++)
-        {
-            parsedData[i].
-        }*/
 
         if (parsedData["error_message"] != null)
         {
-            if (OnPurchaseErrorEvent != null) OnPurchaseErrorEvent(parsedData["error_message"].ToString());
+            PurchasePremiumCurrencyBundleResponse response = new PurchasePremiumCurrencyBundleResponse();
+            response.StatusCode = 0;
+            response.Message = parsedData["error_message"].ToString();
+
+            if (OnPurchaseErrorEvent != null) OnPurchaseErrorEvent(response);
             return;
         }
 
@@ -63,15 +67,18 @@ public class FaceBookPurchaser : MonoBehaviour, IPlatformPurchaser
 
         string bundleJsonString = JsonConvert.SerializeObject(bundlePurchaseRequest);
 
-        CloudGoods.PurchaseCreditBundles(bundleJsonString, OnPurchaseCreditsCallback);
+        CloudGoods.PurchaseCreditBundles(bundleJsonString, OnReceivedPurchaseResponse);
 
-        if (RecievedPurchaseResponse != null)
-            RecievedPurchaseResponse(data);
+        //if (RecievedPurchaseResponse != null)
+        //    RecievedPurchaseResponse(data);
 
     }
 
-    void OnPurchaseCreditsCallback(string data)
+    public void OnReceivedPurchaseResponse(PurchasePremiumCurrencyBundleResponse data)
     {
+        if (RecievedPurchaseResponse != null)
+            RecievedPurchaseResponse(data);
+
         CloudGoods.GetPremiumCurrencyBalance(null);
     }
 }

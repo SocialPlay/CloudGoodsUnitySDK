@@ -134,6 +134,13 @@ public class WorldCurrencyInfo
     public string PaidCurrencyImage;
 }
 
+public class PurchasePremiumCurrencyBundleResponse
+{
+    public int StatusCode;
+    public int Balance;
+    public string Message;
+}
+
 #endregion
 
 #region Items

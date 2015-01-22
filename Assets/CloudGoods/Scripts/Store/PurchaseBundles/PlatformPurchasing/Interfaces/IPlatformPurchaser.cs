@@ -8,10 +8,10 @@ using System;
 
 public interface IPlatformPurchaser
 {
-    event Action<string> RecievedPurchaseResponse;
-    event Action<string> OnPurchaseErrorEvent;
+    event Action<PurchasePremiumCurrencyBundleResponse> RecievedPurchaseResponse;
+    event Action<PurchasePremiumCurrencyBundleResponse> OnPurchaseErrorEvent;
 
     void Purchase(PremiumBundle id, int amount, string userID);
-    void OnReceivedPurchaseResponse(string data);
+    void OnReceivedPurchaseResponse(PurchasePremiumCurrencyBundleResponse data);
 }
 

@@ -16,7 +16,6 @@ using System.Collections.Generic;
 
 public class PremiumCurrencyBundleStore : MonoBehaviour
 {
-
     public GameObject Grid;
     [HideInInspector]
     public bool isInitialized = false;
@@ -47,10 +46,13 @@ public class PremiumCurrencyBundleStore : MonoBehaviour
     void OnRegisteredUserToSession(string obj)
     {
         if (!isInitialized) Initialize();
+        Debug.Log("OnUser Registered");
     }
 
     public void Initialize()
     {
+        Debug.Log("Initialize Credit Bundles");
+
         switch (BuildPlatform.Platform)
         {
             case BuildPlatform.BuildPlatformType.Automatic:
@@ -78,23 +80,28 @@ public class PremiumCurrencyBundleStore : MonoBehaviour
             case BuildPlatform.BuildPlatformType.CloudGoodsStandAlone:
                 Debug.LogWarning("Cloud Goods Stand alone has not purchase method currently.");
                 break;
-            case BuildPlatform.BuildPlatformType.EditorTestPurchasing:
-                platformPurchasor = gameObject.AddComponent<EditorPremiumCurrencyPurchaser>();
-                break;
         }
 
         if (platformPurchasor == null)
-        {            
+        {
+            Debug.Log("platform purchasor is null");
             return;
         }
 
         platformPurchasor.RecievedPurchaseResponse += OnRecievedPurchaseResponse;
         platformPurchasor.OnPurchaseErrorEvent += platformPurchasor_OnPurchaseErrorEvent;
 
-        if(BuildPlatform.Platform == BuildPlatform.BuildPlatformType.EditorTestPurchasing)
+        if (BuildPlatform.Platform == BuildPlatform.BuildPlatformType.EditorTestPurchasing)
+        {
+            Debug.Log("Get credit bundles from editor");
+
             CloudGoods.GetCreditBundles(1, OnPurchaseBundlesRecieved);
+        }
         else
+        {
+            Debug.Log("Purchasing credit bundles from platform:" + BuildPlatform.Platform);
             CloudGoods.GetCreditBundles((int)BuildPlatform.Platform, OnPurchaseBundlesRecieved);
+        }
 
         isInitialized = true;
     }
@@ -154,14 +161,14 @@ public class PremiumCurrencyBundleStore : MonoBehaviour
         }
     }
 
-    void OnRecievedPurchaseResponse(string data)
+    void OnRecievedPurchaseResponse(PurchasePremiumCurrencyBundleResponse data)
     {
         Debug.Log("Received purchase response:  " + data);
         isPurchaseRequest = false;
         CloudGoods.GetPremiumCurrencyBalance(null);
     }
 
-    void platformPurchasor_OnPurchaseErrorEvent(string obj)
+    void platformPurchasor_OnPurchaseErrorEvent(PurchasePremiumCurrencyBundleResponse obj)
     {
         Debug.Log("Purchase Platform Error: " + obj);
 

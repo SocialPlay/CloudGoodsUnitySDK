@@ -24,12 +24,23 @@ public class UnityUIBundlePurchasePopupHandler : MonoBehaviour {
         }
 	}
 
-    void platformPurchasor_RecievedPurchaseResponse(string obj)
+    void OnDisable()
+    {
+        bundleStore.platformPurchasor.OnPurchaseErrorEvent -= platformPurchasor_RecievedPurchaseResponse;
+        bundleStore.platformPurchasor.RecievedPurchaseResponse -= platformPurchasor_RecievedPurchaseResponse;
+
+    }
+
+    void platformPurchasor_RecievedPurchaseResponse(PurchasePremiumCurrencyBundleResponse obj)
     {
         Debug.Log("Purchase popup event called");
 
         PurchaseWindow.SetActive(true);
-        purchaseMessage.text = obj;
+
+        if (obj.StatusCode == 1)
+            purchaseMessage.text = "Purchase Successful";
+        else
+            purchaseMessage.text = obj.Message;
     }
 
     public void CloseWindow()

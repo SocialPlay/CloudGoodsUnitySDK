@@ -11,8 +11,8 @@ using UnityEngine;
 
 public class KongregatePurchase : MonoBehaviour, IPlatformPurchaser
 {
-    public event Action<string> RecievedPurchaseResponse;
-    public event Action<string> OnPurchaseErrorEvent;
+    public event Action<PurchasePremiumCurrencyBundleResponse> RecievedPurchaseResponse;
+    public event Action<PurchasePremiumCurrencyBundleResponse> OnPurchaseErrorEvent;
 
     void Start()
     {
@@ -32,7 +32,7 @@ public class KongregatePurchase : MonoBehaviour, IPlatformPurchaser
      
     }
 
-    public void OnReceivedPurchaseResponse(string data)
+    public void OnReceivedPurchaseResponse(PurchasePremiumCurrencyBundleResponse data)
     {    
         if (RecievedPurchaseResponse != null)
             RecievedPurchaseResponse(data);

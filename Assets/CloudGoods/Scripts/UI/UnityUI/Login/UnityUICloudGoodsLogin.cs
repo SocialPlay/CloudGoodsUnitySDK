@@ -68,7 +68,6 @@ public class UnityUICloudGoodsLogin : MonoBehaviour
             return;
         }
 
-        loginTab.SetActive(true);
         registerErrorLabel.text = "";
         registerTab.SetActive(false);
         confirmationTab.SetActive(false);
@@ -147,6 +146,11 @@ public class UnityUICloudGoodsLogin : MonoBehaviour
     #endregion
 
     #region button functions
+
+    public void DisplayLoginPanel()
+    {
+        loginTab.SetActive(true);
+    }
 
     public void SwitchToRegister()
     {

@@ -13,8 +13,8 @@ public class AndroidPremiumCurrencyPurchaser : MonoBehaviour, IPlatformPurchaser
     public AndroidJavaObject cls_StorePurchaser;
 #endif
 
-    public event Action<string> RecievedPurchaseResponse;
-    public event Action<string> OnPurchaseErrorEvent;
+    public event Action<PurchasePremiumCurrencyBundleResponse> RecievedPurchaseResponse;
+    public event Action<PurchasePremiumCurrencyBundleResponse> OnPurchaseErrorEvent;
 
     void Start()
     {
@@ -70,7 +70,12 @@ public class AndroidPremiumCurrencyPurchaser : MonoBehaviour, IPlatformPurchaser
     {
 		#if UNITY_ANDROID
         if (OnPurchaseErrorEvent != null)
-            OnPurchaseErrorEvent(responseCode);
+        {
+            PurchasePremiumCurrencyBundleResponse response = new PurchasePremiumCurrencyBundleResponse();
+            response.StatusCode = 0;
+            response.Message = "Error Occured, Response Code: " + responseCode;
+            OnPurchaseErrorEvent(response);
+        }
 
         if (responseCode.Remove(1, responseCode.Length - 1) == "7")
         {
@@ -125,7 +130,11 @@ public class AndroidPremiumCurrencyPurchaser : MonoBehaviour, IPlatformPurchaser
         }
         else
         {
-            OnPurchaseErrorEvent(message);
+            PurchasePremiumCurrencyBundleResponse response = new PurchasePremiumCurrencyBundleResponse();
+            response.StatusCode = 0;
+            response.Message = message;
+
+            OnPurchaseErrorEvent(response);
         }
 #endif
     }
@@ -135,25 +144,22 @@ public class AndroidPremiumCurrencyPurchaser : MonoBehaviour, IPlatformPurchaser
         Debug.Log("Debug from Java: " + message);
     }
 
-    public void OnReceivedPurchaseResponse(string data)
+    public void OnReceivedPurchaseResponse(PurchasePremiumCurrencyBundleResponse data)
     {
-        Debug.Log("On Received purchase response: " + data);
-
-        JsonData purchaseResponseObj = LitJson.JsonMapper.ToObject(data);
-
-        if (int.Parse(purchaseResponseObj["StatusCode"].ToString()) == 1)
+        if (data.StatusCode == 1)
         {
             ConsumeCurrentPurchase();
 
             if (RecievedPurchaseResponse != null)
-                RecievedPurchaseResponse("Purchase Successful");
+                RecievedPurchaseResponse(data);
         }
         else
         {
             Debug.Log("Purchase was not authentic, consuming Item");
 
-            if(OnPurchaseErrorEvent != null)
-                OnPurchaseErrorEvent("Purchase Was not Authentic");
+            if (OnPurchaseErrorEvent != null)
+                OnPurchaseErrorEvent(data);
+
         }
     }
 

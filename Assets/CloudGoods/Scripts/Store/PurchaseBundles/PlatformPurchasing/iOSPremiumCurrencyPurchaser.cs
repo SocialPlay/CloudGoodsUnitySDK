@@ -7,14 +7,14 @@ using LitJson;
 public class iOSPremiumCurrencyPurchaser : MonoBehaviour, IPlatformPurchaser
 {
 
-	public event Action<string> RecievedPurchaseResponse;
-    public event Action<string> OnPurchaseErrorEvent;
+    public event Action<PurchasePremiumCurrencyBundleResponse> RecievedPurchaseResponse;
+    public event Action<PurchasePremiumCurrencyBundleResponse> OnPurchaseErrorEvent;
 
 	public int currentBundleID = 0;
 
 	void Start()
 	{
-		iOSConnect.onReceivedMessage += OnReceivedPurchaseResponse;
+        iOSConnect.onReceivedMessage += OnReceivediOSMessageResponse;
 		iOSConnect.onItemPurchaseCancelled += OnItemPurchaseCancelled;
 		iOSConnect.onReceivedErrorOnPurchase += OnItemPurchaseError;
 	}
@@ -26,19 +26,27 @@ public class iOSPremiumCurrencyPurchaser : MonoBehaviour, IPlatformPurchaser
 		iOSConnect.RequestInAppPurchase (bundleItem.ProductID);
 	}
 	
-	public void OnReceivedPurchaseResponse(string data)
+	public void OnReceivediOSMessageResponse(string data)
 	{
     	SendReceiptTokenForVerification (data, 4);
 	}
 	
 	void OnItemPurchaseCancelled(string cancelledString)
 	{
-		OnPurchaseErrorEvent ("Cancelled");
+        PurchasePremiumCurrencyBundleResponse response = new PurchasePremiumCurrencyBundleResponse();
+        response.StatusCode = 0;
+        response.Message = "User Cancelled";
+
+		OnPurchaseErrorEvent (response);
 	}
 
 	void OnItemPurchaseError(string errorMessage)
 	{
-		OnPurchaseErrorEvent ("Error has occured on purchase: " + errorMessage);
+        PurchasePremiumCurrencyBundleResponse response = new PurchasePremiumCurrencyBundleResponse();
+        response.StatusCode = 0;
+        response.Message = "Error: " + errorMessage;
+
+		OnPurchaseErrorEvent (response);
 	}
 
 	void SendReceiptTokenForVerification (string data, int platform)
@@ -52,14 +60,14 @@ public class iOSPremiumCurrencyPurchaser : MonoBehaviour, IPlatformPurchaser
 
 		Debug.Log ("Sending bundle purchase: " + bundleJsonString);
 
-		CloudGoods.PurchaseCreditBundles (bundleJsonString, OnReceivedSocialplayCreditsResponse);
+        CloudGoods.PurchaseCreditBundles(bundleJsonString, OnReceivedPurchaseResponse);
 	}
 
 
-    void OnReceivedSocialplayCreditsResponse(string data)
+    public void OnReceivedPurchaseResponse(PurchasePremiumCurrencyBundleResponse data)
     {
 		Debug.Log ("received credit response: " + data);
-		RecievedPurchaseResponse("Success");
+		RecievedPurchaseResponse(data);
         CloudGoods.GetPremiumCurrencyBalance(null);
     }
 	

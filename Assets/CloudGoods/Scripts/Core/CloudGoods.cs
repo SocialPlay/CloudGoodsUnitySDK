@@ -1153,7 +1153,7 @@ public class CloudGoods : MonoBehaviour//, IServiceCalls
         Get().StartCoroutine(Get().ServiceGetCreditBundles(www, callback));
     }
 
-    static public void PurchaseCreditBundles(string payload, Action<string> callback)
+    static public void PurchaseCreditBundles(string payload, Action<PurchasePremiumCurrencyBundleResponse> callback)
     {
         string url = Url + "PurchaseCreditBundle?AppID=" + GuidAppID + "&payload=" + WWW.EscapeURL(EncryptStringUnity(payload));
 
@@ -1161,11 +1161,8 @@ public class CloudGoods : MonoBehaviour//, IServiceCalls
 
         Debug.Log("Purchase bundles url: " + url);
 
-        Get().StartCoroutine(Get().ServiceGetString(www, (string message) =>
+        Get().StartCoroutine(Get().ServicePurchasePremiumCurrencyResponse(www, (PurchasePremiumCurrencyBundleResponse message) =>
         {
-            Debug.Log("PUrchase credit bundles callback: : " + message);
-            JsonData response = LitJson.JsonMapper.ToObject(message);
-
             GetStandardCurrencyBalance(0, null);
             GetPremiumCurrencyBalance(null);
             if (callback != null) callback(message);
@@ -1196,6 +1193,22 @@ public class CloudGoods : MonoBehaviour//, IServiceCalls
         }
         return filteredStoreItems;
     }
+
+
+    static public void FacebookPurchaseRequest(string bundleID, Action<int> callback)
+    {
+        string url = Url + "PersistFacebookPurchaseRequest?appId=" + GuidAppID + "&userId=" + user.userGuid + "&bundleId=" + bundleID;
+
+        WWW www = new WWW(url);
+
+        Debug.Log("FacebookPurchase bundles url: " + url);
+
+        Get().StartCoroutine(Get().ServiceGetInt(www, (int message) =>
+        {
+            if (callback != null) callback(message);
+        }));
+    }
+
 
 
     #endregion
@@ -1382,6 +1395,30 @@ public class CloudGoods : MonoBehaviour//, IServiceCalls
             try
             {
                 callback(serviceConverter.ConvertToString(www.text));
+            }
+            catch (Exception e)
+            {
+                Debug.LogError(www.text);
+                Debug.LogError(e.Message);
+            }
+        }
+        else
+        {
+            if (onErrorEvent != null) onErrorEvent("Error: " + www.error);
+        }
+    }
+
+
+    IEnumerator ServiceGetInt(WWW www, Action<int> callback)
+    {
+        yield return www;
+
+        // check for errors
+        if (www.error == null)
+        {
+            try
+            {
+                callback(serviceConverter.ConvertToInt(www.text));
             }
             catch (Exception e)
             {
@@ -1745,6 +1782,29 @@ public class CloudGoods : MonoBehaviour//, IServiceCalls
             try
             {
                 callback(serviceConverter.ConvertToUserDataResponse(www.text));
+            }
+            catch (Exception e)
+            {
+                Debug.LogError(e.Message);
+                Debug.LogError(www.text);
+            }
+        }
+        else
+        {
+            if (onErrorEvent != null) onErrorEvent("Error: " + www.error);
+        }
+    }
+
+    IEnumerator ServicePurchasePremiumCurrencyResponse(WWW www, Action<PurchasePremiumCurrencyBundleResponse> callback)
+    {
+        yield return www;
+
+        // check for errors
+        if (www.error == null)
+        {
+            try
+            {
+                callback(serviceConverter.ConvertToPurchasePremiumCurrencyBundleResponse(www.text));
             }
             catch (Exception e)
             {

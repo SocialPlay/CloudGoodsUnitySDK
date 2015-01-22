@@ -13,6 +13,8 @@ public interface IServiceObjectConverter
 
     string ConvertToString(string dataString);
 
+    int ConvertToInt(string dataString);
+
     bool ConvertToBool(string dataString);
 
     Dictionary<string,string> ConvertToDictionary(string datastring);
@@ -42,5 +44,7 @@ public interface IServiceObjectConverter
     List<GiveGeneratedItemResult> ConvertToListGiveGenerationItemResult(string dataString);
 
     PersistentDataResponse ConvertToUserDataResponse(string dataString);
+
+    PurchasePremiumCurrencyBundleResponse ConvertToPurchasePremiumCurrencyBundleResponse(string dataString);
 
 }
