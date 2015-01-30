@@ -45,7 +45,6 @@ public class UnityUICloudGoodsLogin : MonoBehaviour
 
     void OnEnable()
     {
-        CloudGoods.OnUserLogin += RecivedLoginResponce;
         CloudGoods.OnUserAuthorized += RecivedUserGuid;
         CloudGoods.OnForgotPassword += ForgotPasswordResponce;
         CloudGoods.OnVerificationSent += ResentVerificationResponce;
@@ -54,7 +53,6 @@ public class UnityUICloudGoodsLogin : MonoBehaviour
 
     void OnDisable()
     {
-        CloudGoods.OnUserLogin -= RecivedLoginResponce;
         CloudGoods.OnUserAuthorized -= RecivedUserGuid;
         CloudGoods.OnForgotPassword -= ForgotPasswordResponce;
         CloudGoods.OnVerificationSent -= ResentVerificationResponce;
@@ -125,18 +123,6 @@ public class UnityUICloudGoodsLogin : MonoBehaviour
     void ForgotPasswordResponce(UserResponse responce)
     {
         confirmationStatus.text = responce.message;
-    }
-
-    void RecivedLoginResponce(UserResponse recivedMessage)
-    {
-        if (recivedMessage.code == 3)
-        {
-            resendVerificationTextObject.SetActive(true);
-            return;
-        }
-
-        resendVerificationTextObject.SetActive(false);
-        loginErrorLabel.text = recivedMessage.message;
     }
 
     void LoginSuccess(Guid userID)

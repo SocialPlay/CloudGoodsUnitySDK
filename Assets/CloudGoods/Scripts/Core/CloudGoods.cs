@@ -24,7 +24,6 @@ public class CloudGoods : MonoBehaviour//, IServiceCalls
     #region Global Events/Callbacks
 
     static public event Action<string> onErrorEvent;
-    static public event Action<UserResponse> OnUserLogin;
     static public event Action onLogout;
     static public event Action<UserResponse> OnUserRegister;
     static public event Action<UserResponse> OnForgotPassword;
@@ -777,10 +776,6 @@ public class CloudGoods : MonoBehaviour//, IServiceCalls
                     AuthorizeUser(ui);
                     onSuccess(response);
                 }
-            }
-            else
-            {
-                if (OnUserLogin != null) OnUserLogin(response);
             }
         }));
     }

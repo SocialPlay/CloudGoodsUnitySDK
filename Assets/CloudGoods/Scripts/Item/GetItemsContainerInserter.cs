@@ -42,7 +42,11 @@ public class GetItemsContainerInserter : MonoBehaviour, IGetItems
                 selectItem.Amount = item.stackSize;
 
                 AddItemToGenerationPackage("User", item.GenerationID, container.GetComponentInChildren<PersistentItemContainer>().Location, selectItem);
+
+                giveItems.Add(selectItem);
             }
+
+            InitialUpdateContainerDisplay(giveItems);
         }
     }
 
@@ -74,6 +78,25 @@ public class GetItemsContainerInserter : MonoBehaviour, IGetItems
         generationPackage.targetContainer = container;
 
         CloudGoods.GenerationPackages.Add(generationPackage);
+    }
+
+    void InitialUpdateContainerDisplay(List<SelectedGenerationItem> selectedItems)
+    {
+        Debug.Log("Initial update");
+
+        List<GiveGeneratedItemResult> generatedItemResult = new List<GiveGeneratedItemResult>();
+
+        foreach(SelectedGenerationItem selectedItem in selectedItems)
+        {
+            GiveGeneratedItemResult giveItem = new GiveGeneratedItemResult();
+            giveItem.ItemId = selectedItem.ItemId;
+            giveItem.Amount = selectedItem.Amount;
+            giveItem.StackLocationId = Guid.Empty;
+
+            generatedItemResult.Add(giveItem);
+        }
+
+        container.UpdateContainerWithItems(generatedItemResult);
     }
 
 
