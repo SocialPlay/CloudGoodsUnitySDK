@@ -31,7 +31,7 @@ public class UnityUIItemRecipe : MonoBehaviour, IItemRecipe {
         foreach (IngredientDetail ingredient in itemIngredients)
         {
             GameObject ingredientObj = (GameObject)GameObject.Instantiate(IngredientPrefab);
-            ingredientObj.transform.parent = IngredientsGrid.transform;
+            ingredientObj.transform.SetParent(IngredientsGrid.transform);
 
             RecipeIngredient recipeIngredient = ingredientObj.GetComponent<RecipeIngredient>();
             recipeIngredient.LoadIngredient(ingredient);

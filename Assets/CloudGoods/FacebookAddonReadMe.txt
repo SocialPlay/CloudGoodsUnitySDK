@@ -5,7 +5,7 @@ Setup
 
 
 1. Download the official Facebook Unity SDK from https://developers.facebook.com/docs/unity
-2. Download the Cloud Goods Facebook Addon unity package http://socialplay.blob.core.windows.net/sdk/CloudGoodsUnityFacebook.unitypackage
+2. Download the Cloud Goods Facebook Addon unity package at http://developer.socialplay.com/#sdk
 3. Attach CloudGoodsFacebookLogin Component to any gameobject in the scene.
 4. Press play in the editor and it should show a facebook pop up to log in, You can get your access token and successfully retrieve your facebook user info from unity editor
 5. To display the user info in a unityUI text to confirm it worked, add a UnityUI Text into the scene.

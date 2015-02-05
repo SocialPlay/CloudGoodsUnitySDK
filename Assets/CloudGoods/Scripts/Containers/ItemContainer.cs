@@ -241,13 +241,10 @@ public class ItemContainer : MonoBehaviour
             }
             else
             {
-                Debug.Log("No stackID found, checking ITemID");
-
                 givenItemData = containerItems.FirstOrDefault(x => x.ItemID == givenUserItem.ItemId);
 
                 if (givenItemData != null)
                 {
-                    Debug.Log("given item data not null");
                     IsItemInContainer = true;
                     givenItemData.stackSize += givenUserItem.Amount;
                 }

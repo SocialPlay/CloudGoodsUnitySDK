@@ -15,7 +15,7 @@ public class ItemRecipeLoader : MonoBehaviour {
 
     public void LoadItemRecipes()
     {
-        ItemRecipeCache.instance.GetRecipes(OnReceivedItemRecipes);
+        CloudGoods.GetGameRecipes(OnReceivedItemRecipes);
         CloudGoods.GetOwnerItems(CloudGoods.user.userGuid, "User", 0, OnReceivedOwnerItems);
     }
 
@@ -31,7 +31,7 @@ public class ItemRecipeLoader : MonoBehaviour {
         foreach (RecipeInfo newRecipe in newRecipes)
         {
             GameObject newRecipeObj = (GameObject)GameObject.Instantiate(RecipePrefab);
-            newRecipeObj.transform.parent = RecipeGrid.transform;
+            newRecipeObj.transform.SetParent(RecipeGrid.transform);
 
             UnityUIItemRecipe itemRecipe = newRecipeObj.GetComponent<UnityUIItemRecipe>();
             itemRecipe.LoadItemRecipe(newRecipe);
@@ -39,8 +39,6 @@ public class ItemRecipeLoader : MonoBehaviour {
 
             currentItemRecipes.Add(newRecipeObj);
         }
-
-        RecipeGrid.transform.position += new Vector3(0, -70, 0);
     }
 
     void ClearCurrentItemRecipes()

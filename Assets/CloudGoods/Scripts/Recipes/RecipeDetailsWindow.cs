@@ -16,6 +16,7 @@ public class RecipeDetailsWindow : MonoBehaviour {
     public GameObject IngredientsGrid;
 
     public GameObject craftingButton;
+    public GameObject InsufficentText;
 
     public List<ItemData> ownerItems;
 
@@ -43,15 +44,21 @@ public class RecipeDetailsWindow : MonoBehaviour {
         foreach (IngredientDetail ingredient in recipeInfo.IngredientDetails)
         {
             GameObject ingredientObj = (GameObject)GameObject.Instantiate(IngredientPrefab);
-            ingredientObj.transform.parent = IngredientsGrid.transform;
+            ingredientObj.transform.SetParent(IngredientsGrid.transform);
 
             HasEnoughResources = HasAvailableIngredientsForRecipe(ingredientObj, ingredient);
         }
 
         if (HasEnoughResources)
+        {
             craftingButton.SetActive(true);
+            InsufficentText.SetActive(false);
+        }
         else
+        {
             craftingButton.SetActive(false);
+            InsufficentText.SetActive(true);
+        }
     }
 
     bool HasAvailableIngredientsForRecipe(GameObject ingredientObj, IngredientDetail ingredient)

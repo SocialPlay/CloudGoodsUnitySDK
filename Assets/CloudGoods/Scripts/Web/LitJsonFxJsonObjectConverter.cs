@@ -177,7 +177,10 @@ public class LitJsonFxJsonObjectConverter : IServiceObjectConverter
 
     public int ConvertToInt(string dataString)
     {
-        return int.Parse(dataString);
+        if (ParseString(dataString).Length > 0)
+            return int.Parse(ParseString(dataString));
+        else
+            return int.Parse(dataString);
     }
 
 

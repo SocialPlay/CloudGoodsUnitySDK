@@ -918,11 +918,10 @@ public class CloudGoods : MonoBehaviour//, IServiceCalls
 
         WWW www = new WWW(url);
 
-        Get().StartCoroutine(Get().ServiceGetString(www, (string value) =>
+        Get().StartCoroutine(Get().ServiceGetInt(www, (int value) =>
         {
-            standardCurrency = System.Convert.ToInt32(value);
-            OnStandardCurrency(standardCurrency);
-            if (callback != null) callback(standardCurrency);
+            if(OnStandardCurrency != null) OnStandardCurrency(value);
+            if (callback != null) callback(value);
         }));
     }
 
@@ -932,11 +931,10 @@ public class CloudGoods : MonoBehaviour//, IServiceCalls
 
         WWW www = new WWW(url);
 
-        Get().StartCoroutine(Get().ServiceGetString(www, (string value) =>
+        Get().StartCoroutine(Get().ServiceGetInt(www, (int value) =>
         {
-            premiumCurrency = System.Convert.ToInt32(value);
-            OnPremiumCurrency(premiumCurrency);
-            if (callback != null) callback(premiumCurrency);
+            if (OnPremiumCurrency != null) OnPremiumCurrency(value);
+            if (callback != null) callback(value);
         }));
     }
 
@@ -1564,14 +1562,14 @@ public class CloudGoods : MonoBehaviour//, IServiceCalls
 
         if (www.error == null)
         {
-            try
-            {
+            //try
+            //{
                 callback(serviceConverter.ConvertToListRecipeInfo(www.text));
-            }
-            catch
-            {
-                Debug.LogError(www.text);
-            }
+            //}
+            //catch
+            //{
+            //    Debug.LogError(www.text);
+            //}
         }
         else
         {
