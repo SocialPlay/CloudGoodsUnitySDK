@@ -107,9 +107,9 @@ public class GameObjectItemDataConverter : ItemDataConverter
         return tags;
     }
 
-    public override Dictionary<string, float> ConvertItemDetail(SocialPlay.Data.ItemData item)
+    public override Dictionary<string, string> ConvertItemDetail(SocialPlay.Data.ItemData item)
     {
-        Dictionary<string, float> statPair = new Dictionary<string, float>();
+        Dictionary<string, string> statPair = new Dictionary<string, string>();
 
         if (string.IsNullOrEmpty(item.Detail))
         {

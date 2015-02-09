@@ -84,9 +84,9 @@ public class TestMoveFromContainerToContainer : MonoBehaviour {
         testItemDataOne.quality = 1;
         testItemDataOne.salePrice = 10;
         testItemDataOne.stackSize = 1;
-        testItemDataOne.stats = new Dictionary<string, float>();
-        testItemDataOne.stats.Add("Health", 10);
-        testItemDataOne.stats.Add("Armor", 12);
+        testItemDataOne.stats = new Dictionary<string, string>();
+        testItemDataOne.stats.Add("Health", "10");
+        testItemDataOne.stats.Add("Armor", "12");
         testItemDataOne.tags = new List<string>();
         testItemDataOne.tags.Add("Pet");
         testItemDataOne.totalEnergy = 15;

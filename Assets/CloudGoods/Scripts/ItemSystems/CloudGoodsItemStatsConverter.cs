@@ -7,13 +7,15 @@ using System.Collections.Generic;
 
 public class SocialplayItemStatsConverter : IItemStatsConverter
 {
-    public Dictionary<string, float> Generate(JArray statsDataObject)
+    public Dictionary<string, string> Generate(JArray statsDataObject)
     {
-        Dictionary<string, float> statPair = new Dictionary<string, float>();
+        Dictionary<string, string> statPair = new Dictionary<string, string>();
 
         for (int i = 0; i < statsDataObject.Count; i++)
         {
-            statPair.Add(statsDataObject[i]["Name"].ToString(), float.Parse(statsDataObject[i]["Value"].ToString()));
+            float itemStat = 0.0f;
+
+            statPair.Add(statsDataObject[i]["Name"].ToString(), statsDataObject[i]["Value"].ToString());
         }
 
         return statPair;

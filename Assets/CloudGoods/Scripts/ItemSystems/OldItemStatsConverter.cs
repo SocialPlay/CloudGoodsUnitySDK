@@ -5,9 +5,9 @@ using System.Collections.Generic;
 
 public class OldItemStatsConverter : IItemStatsConverter
 {
-    public Dictionary<string, float> Generate(JArray statsDataObject)
+    public Dictionary<string, string> Generate(JArray statsDataObject)
     {
-        Dictionary<string, float> statPair = new Dictionary<string, float>();
+        Dictionary<string, string> statPair = new Dictionary<string, string>();
         //foreach (var info in statsDataObject)
         //{
         //    if (statsDataObject["CT"].ToString().Equals("NonUniqueItem"))

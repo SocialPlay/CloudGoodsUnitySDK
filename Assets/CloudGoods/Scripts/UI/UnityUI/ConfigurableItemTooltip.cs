@@ -42,7 +42,7 @@ public class ConfigurableItemTooltip : MonoBehaviour, ITooltipSetup
                     }
                     break;
                 case DisaplyOption.stats:
-                    foreach (KeyValuePair<string, float> pair in item.stats)
+                    foreach (KeyValuePair<string, string> pair in item.stats)
                     {
                         if (pair.Key == "Not Available") continue;
 

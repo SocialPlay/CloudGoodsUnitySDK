@@ -24,7 +24,7 @@ public class ItemData
     public bool isOwned = false;
     public int persistantLocation = -1;
 
-    public Dictionary<string, float> stats;
+    public Dictionary<string, string> stats;
     public string assetURL;
     public List<string> tags;
 

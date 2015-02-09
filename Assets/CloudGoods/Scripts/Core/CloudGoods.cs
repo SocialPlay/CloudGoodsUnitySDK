@@ -1496,14 +1496,8 @@ public class CloudGoods : MonoBehaviour//, IServiceCalls
 
         if (www.error == null)
         {
-            try
-            {
+
                 callback(serviceConverter.ConvertToItemDataList(www.text));
-            }
-            catch
-            {
-                Debug.LogError(www.text);
-            }
         }
         else
         {

@@ -2,16 +2,21 @@
 using System.Collections;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using System;
 
 public class UnityUIItemRecipe : MonoBehaviour, IItemRecipe {
 
     public Text recipeName;
     public RawImage recipeItemImage;
 
+    public Text recipeCraftTime;
+
     public GameObject IngredientsGrid;
     public GameObject IngredientPrefab;
 
     public RecipeDetailsWindow recipeDetailsWindow;
+
+    int craftingFactor = 5;
 
     RecipeInfo recipeInfo;
 
@@ -20,6 +25,8 @@ public class UnityUIItemRecipe : MonoBehaviour, IItemRecipe {
         recipeInfo = newRecipeInfo;
 
         recipeName.text = recipeInfo.name;
+
+        recipeCraftTime.text = GetStringCraftTime(newRecipeInfo.energy);
 
         CloudGoods.GetItemTexture(recipeInfo.imgURL, OnReceivedRecipeImage);
 
@@ -46,5 +53,14 @@ public class UnityUIItemRecipe : MonoBehaviour, IItemRecipe {
     public void OnRecipeButtonClicked()
     {
         recipeDetailsWindow.OpenRecipeDetailsWindow(recipeInfo);
+    }
+
+    string GetStringCraftTime(int itemEnergy)
+    {
+        int craftTime = itemEnergy * craftingFactor;
+
+        TimeSpan craftTimeSpan =TimeSpan.FromSeconds(craftTime);
+        
+        return "Craft Time: " + craftTimeSpan.ToString();
     }
 }
